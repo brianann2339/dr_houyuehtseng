@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const siteUrl = "https://yuehtsenghou.yuehtseng.chatgpt.site";
+const siteRoot = "https://brianann2339.github.io/dr_houyuehtseng";
+const siteUrl = `${siteRoot}/`;
+const researchUrl = `${siteRoot}/research/`;
 
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -44,7 +46,7 @@ test("renders the finished personal website", async () => {
   const text = visibleText(html);
   assert.match(html, /<html lang="zh-Hant">/i);
   assert.match(html, /<title>侯岳岑 Yueh-Tseng Hou｜急診醫師・臨床 AI 研究者<\/title>/i);
-  assert.match(html, new RegExp(`<link rel="canonical" href="${siteUrl}/?"`));
+  assert.match(html, new RegExp(`<link rel="canonical" href="${siteUrl}"`));
   assert.doesNotMatch(html, /noindex/i);
   const profileJson = html.match(
     /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
@@ -55,7 +57,7 @@ test("renders the finished personal website", async () => {
   assert.equal(profilePage.url, siteUrl);
   assert.equal(profilePage.mainEntity["@type"], "Person");
   assert.equal(profilePage.mainEntity.name, "侯岳岑");
-  assert.equal(profilePage.mainEntity.image, `${siteUrl}/portrait.jpg`);
+  assert.equal(profilePage.mainEntity.image, `${siteRoot}/portrait.jpg`);
   assert.deepEqual(profilePage.mainEntity.sameAs, [
     "https://scholar.google.com/citations?user=F2RvQloAAAAJ&hl=zh-TW",
     "https://orcid.org/0009-0003-5125-0771",
@@ -196,7 +198,7 @@ test("renders the complete research archive", async () => {
   assert.match(html, /<title>研究成果｜侯岳岑 Yueh-Tseng Hou<\/title>/i);
   assert.match(
     html,
-    new RegExp(`<link rel="canonical" href="${siteUrl}/research"`),
+    new RegExp(`<link rel="canonical" href="${researchUrl}"`),
   );
   assert.doesNotMatch(html, /noindex/i);
   assert.match(html, /<main[^>]*id="research-content"[^>]*tabindex="-1"/i);
@@ -330,7 +332,7 @@ test("exposes crawl rules and the public sitemap", async () => {
   const robots = await robotsResponse.text();
   assert.match(robots, /User-Agent: \*/i);
   assert.match(robots, /Allow: \//i);
-  assert.match(robots, new RegExp(`Sitemap: ${siteUrl}/sitemap\\.xml`));
+  assert.match(robots, new RegExp(`Sitemap: ${siteRoot}/sitemap\\.xml`));
 
   assert.equal(sitemapResponse.status, 200);
   assert.match(
@@ -340,7 +342,7 @@ test("exposes crawl rules and the public sitemap", async () => {
   const sitemap = await sitemapResponse.text();
   assert.deepEqual(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
-    [siteUrl, `${siteUrl}/research`],
+    [siteUrl, researchUrl],
   );
 });
 

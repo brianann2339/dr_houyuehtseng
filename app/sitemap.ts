@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { siteUrl } from "./site";
+import { homeUrl, researchUrl } from "./site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [{ url: siteUrl }, { url: `${siteUrl}/research` }];
+  return [{ url: homeUrl }, { url: researchUrl }];
 }

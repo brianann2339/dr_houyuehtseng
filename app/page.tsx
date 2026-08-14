@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteUrl } from "./site";
+import { homeUrl, siteUrl } from "./site";
 
 const ArrowUpRight = () => (
   <span className="arrow" aria-hidden="true">
@@ -19,15 +19,15 @@ const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
 const profilePageStructuredData = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  url: siteUrl,
+  url: homeUrl,
   mainEntity: {
     "@type": "Person",
-    "@id": `${siteUrl}/#person`,
+    "@id": `${homeUrl}#person`,
     name: "侯岳岑",
     alternateName: "Yueh-Tseng Hou",
     honorificSuffix: "M.D.",
     description: "急診醫師・臨床 AI 研究者",
-    url: siteUrl,
+    url: homeUrl,
     image: `${siteUrl}/portrait.jpg`,
     jobTitle: "專任主治醫師",
     worksFor: {
