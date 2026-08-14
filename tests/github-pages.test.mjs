@@ -25,6 +25,10 @@ test("exports a static GitHub Pages artifact", async () => {
 
   assert.match(home, new RegExp(`<link rel="canonical" href="${siteRoot}/"`));
   assert.match(
+    home,
+    /<meta name="google-site-verification" content="z9Oqz_ZatY5FOe1Uk2-7pk9zyFW01yl94YoX3nyf8mA"/,
+  );
+  assert.match(
     research,
     new RegExp(`<link rel="canonical" href="${siteRoot}/research/"`),
   );
