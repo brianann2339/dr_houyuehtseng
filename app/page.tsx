@@ -298,11 +298,15 @@ export default function Home() {
               </a>
             </div>
             <p className="threads-note">
-              平常也在 Threads 寫{" "}
+              平常也在{" "}
               <a href={threadsUrl} target="_blank" rel="noreferrer">
-                逛街學醫學
-              </a>
-              ——把醫學知識寫得貼近日常。
+                Threads
+              </a>{" "}
+              與{" "}
+              <a href={youtubeUrl} target="_blank" rel="noreferrer">
+                YouTube
+              </a>{" "}
+              經營逛街學醫學——把醫學知識寫得貼近日常。
             </p>
           </div>
           <div className="photo-frame">
@@ -477,11 +481,13 @@ export default function Home() {
           </div>
           <h3 className="sub-h">公共溝通</h3>
           <p className="topics">
-            Threads{" "}
             <a href={threadsUrl} target="_blank" rel="noreferrer">
-              逛街學醫學
-            </a>
-            ——把醫學知識寫得貼近日常。
+              Threads
+            </a>{" "}
+            與{" "}
+            <a href={youtubeUrl} target="_blank" rel="noreferrer">
+              YouTube
+            </a>{"｜逛街學醫學——把醫學知識寫得貼近日常。"}
           </p>
         </section>
 

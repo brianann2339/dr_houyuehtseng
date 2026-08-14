@@ -171,7 +171,16 @@ test("renders the finished personal website", async () => {
   );
   assert.equal(
     (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
-    2,
+    4,
+  );
+  assert.equal((text.match(/Threads 與 YouTube/g) ?? []).length, 2);
+  assert.match(
+    text,
+    /平常也在 Threads 與 YouTube 經營逛街學醫學——把醫學知識寫得貼近日常。/,
+  );
+  assert.match(
+    html,
+    /<a href="https:\/\/www\.youtube\.com\/@hou_care_you" target="_blank" rel="noreferrer">YouTube<\/a>｜逛街學醫學——把醫學知識寫得貼近日常。/,
   );
   assert.equal((text.match(/把醫學知識寫得貼近日常/g) ?? []).length, 3);
   assert.doesNotMatch(text, /寫給一般讀者的醫學筆記/);
