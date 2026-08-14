@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteUrl } from "./site";
 
 const ArrowUpRight = () => (
   <span className="arrow" aria-hidden="true">
@@ -14,6 +15,28 @@ const linkedinUrl =
 const threadsUrl = "https://www.threads.com/@hou_care_you";
 const niiLabUrl = "https://research.nii.ac.jp/pbv/";
 const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
+
+const profilePageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: siteUrl,
+  mainEntity: {
+    "@type": "Person",
+    "@id": `${siteUrl}/#person`,
+    name: "侯岳岑",
+    alternateName: "Yueh-Tseng Hou",
+    honorificSuffix: "M.D.",
+    description: "急診醫師・臨床 AI 研究者",
+    url: siteUrl,
+    image: `${siteUrl}/portrait.jpg`,
+    jobTitle: "專任主治醫師",
+    worksFor: {
+      "@type": "Hospital",
+      name: "台北慈濟醫院",
+    },
+    sameAs: [scholarUrl, orcidUrl, linkedinUrl, threadsUrl],
+  },
+};
 
 const footerLinks = [
   { label: "Google Scholar", href: scholarUrl },
@@ -224,6 +247,12 @@ const SectionTitle = ({ title }: { title: string }) => (
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(profilePageStructuredData),
+        }}
+      />
       <a className="skip-link" href="#content">
         跳至主要內容
       </a>

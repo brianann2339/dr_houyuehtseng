@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+const siteUrl = "https://yuehtsenghou.yuehtseng.chatgpt.site";
+
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -42,6 +44,24 @@ test("renders the finished personal website", async () => {
   const text = visibleText(html);
   assert.match(html, /<html lang="zh-Hant">/i);
   assert.match(html, /<title>侯岳岑 Yueh-Tseng Hou｜急診醫師・臨床 AI 研究者<\/title>/i);
+  assert.match(html, new RegExp(`<link rel="canonical" href="${siteUrl}/?"`));
+  assert.doesNotMatch(html, /noindex/i);
+  const profileJson = html.match(
+    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+  );
+  assert.ok(profileJson);
+  const profilePage = JSON.parse(profileJson[1]);
+  assert.equal(profilePage["@type"], "ProfilePage");
+  assert.equal(profilePage.url, siteUrl);
+  assert.equal(profilePage.mainEntity["@type"], "Person");
+  assert.equal(profilePage.mainEntity.name, "侯岳岑");
+  assert.equal(profilePage.mainEntity.image, `${siteUrl}/portrait.jpg`);
+  assert.deepEqual(profilePage.mainEntity.sameAs, [
+    "https://scholar.google.com/citations?user=F2RvQloAAAAJ&hl=zh-TW",
+    "https://orcid.org/0009-0003-5125-0771",
+    "https://www.linkedin.com/in/%E5%B2%B3%E5%B2%91-%E4%BE%AF-676792114/",
+    "https://www.threads.com/@hou_care_you",
+  ]);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.match(html, /<h1>侯岳岑<\/h1>/);
   assert.match(html, /Yueh-Tseng Hou, M\.D\./);
@@ -174,6 +194,11 @@ test("renders the complete research archive", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>研究成果｜侯岳岑 Yueh-Tseng Hou<\/title>/i);
+  assert.match(
+    html,
+    new RegExp(`<link rel="canonical" href="${siteUrl}/research"`),
+  );
+  assert.doesNotMatch(html, /noindex/i);
   assert.match(html, /<main[^>]*id="research-content"[^>]*tabindex="-1"/i);
   assert.match(html, /論文發表/);
   assert.match(html, /歷年研究計畫/);
@@ -292,6 +317,31 @@ test("renders the complete research archive", async () => {
   assert.match(html, /TCRD-TPE-109-13/);
   assert.equal((visibleText(html).match(/（IRB: /g) ?? []).length, 7);
   assert.doesNotMatch(html, /TRCD-TPE-/);
+});
+
+test("exposes crawl rules and the public sitemap", async () => {
+  const [robotsResponse, sitemapResponse] = await Promise.all([
+    render("/robots.txt"),
+    render("/sitemap.xml"),
+  ]);
+
+  assert.equal(robotsResponse.status, 200);
+  assert.match(robotsResponse.headers.get("content-type") ?? "", /^text\/plain\b/i);
+  const robots = await robotsResponse.text();
+  assert.match(robots, /User-Agent: \*/i);
+  assert.match(robots, /Allow: \//i);
+  assert.match(robots, new RegExp(`Sitemap: ${siteUrl}/sitemap\\.xml`));
+
+  assert.equal(sitemapResponse.status, 200);
+  assert.match(
+    sitemapResponse.headers.get("content-type") ?? "",
+    /^(application|text)\/xml\b/i,
+  );
+  const sitemap = await sitemapResponse.text();
+  assert.deepEqual(
+    [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
+    [siteUrl, `${siteUrl}/research`],
+  );
 });
 
 test("keeps private source material out of the public page", async () => {

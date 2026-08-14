@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { siteUrl } from "./site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "侯岳岑 Yueh-Tseng Hou｜急診醫師・臨床 AI 研究者",
   description:
     "侯岳岑（Yueh-Tseng Hou, M.D.），急診醫師・臨床 AI 研究者。台北慈濟醫院急診部專任主治醫師、國立臺灣大學生醫電子與資訊學研究所博士候選人；與跨領域團隊一起把敗血症預測模型帶進急診的日常流程。",
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

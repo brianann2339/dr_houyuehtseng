@@ -506,6 +506,8 @@ export const metadata: Metadata = {
   title: "研究成果｜侯岳岑 Yueh-Tseng Hou",
   description:
     "侯岳岑的論文發表與歷年研究計畫，涵蓋急診醫學、敗血症決策支援、外傷預後、休克指數與醫學影像 AI。",
+  alternates: { canonical: "/research" },
+  robots: { index: true, follow: true },
 };
 
 export default function Research() {
