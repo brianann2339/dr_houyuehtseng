@@ -8,6 +8,7 @@ const orcidUrl = "https://orcid.org/0009-0003-5125-0771";
 const linkedinUrl =
   "https://www.linkedin.com/in/%E5%B2%B3%E5%B2%91-%E4%BE%AF-676792114/";
 const threadsUrl = "https://www.threads.com/@hou_care_you";
+const youtubeUrl = "https://www.youtube.com/@hou_care_you";
 
 const publications = [
   {
@@ -495,6 +496,7 @@ const footerLinks = [
   { label: "ORCID", href: orcidUrl },
   { label: "LinkedIn", href: linkedinUrl },
   { label: "Threads", href: threadsUrl },
+  { label: "YouTube", href: youtubeUrl },
 ];
 
 const ArrowUpRight = () => (

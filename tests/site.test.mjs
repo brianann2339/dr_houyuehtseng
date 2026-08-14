@@ -63,6 +63,7 @@ test("renders the finished personal website", async () => {
     "https://orcid.org/0009-0003-5125-0771",
     "https://www.linkedin.com/in/%E5%B2%B3%E5%B2%91-%E4%BE%AF-676792114/",
     "https://www.threads.com/@hou_care_you",
+    "https://www.youtube.com/@hou_care_you",
   ]);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.match(html, /<h1>侯岳岑<\/h1>/);
@@ -168,6 +169,10 @@ test("renders the finished personal website", async () => {
     (html.match(/href="https:\/\/www\.threads\.com\/@hou_care_you"/g) ?? []).length,
     4,
   );
+  assert.equal(
+    (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
+    2,
+  );
   assert.equal((text.match(/把醫學知識寫得貼近日常/g) ?? []).length, 3);
   assert.doesNotMatch(text, /寫給一般讀者的醫學筆記/);
   assert.match(
@@ -206,6 +211,10 @@ test("renders the complete research archive", async () => {
   assert.match(html, /歷年研究計畫/);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
+  assert.equal(
+    (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
+    1,
+  );
   const expectedAuthors = [
     "YT Ho, YC Yang, HK Huang, JL Hong, DS Chien, YT Hou, PC Lin, GT Yiang, MY Wu",
     "YT Hou, MY Wu, YL Chen, TH Liu, RT Cheng, PL Hsu, AK Chao, CC Huang, FW Cheng, PL Lai, IF Wu, GT Yiang",

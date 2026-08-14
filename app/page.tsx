@@ -13,6 +13,7 @@ const orcidUrl = "https://orcid.org/0009-0003-5125-0771";
 const linkedinUrl =
   "https://www.linkedin.com/in/%E5%B2%B3%E5%B2%91-%E4%BE%AF-676792114/";
 const threadsUrl = "https://www.threads.com/@hou_care_you";
+const youtubeUrl = "https://www.youtube.com/@hou_care_you";
 const niiLabUrl = "https://research.nii.ac.jp/pbv/";
 const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
 
@@ -34,7 +35,7 @@ const profilePageStructuredData = {
       "@type": "Hospital",
       name: "台北慈濟醫院",
     },
-    sameAs: [scholarUrl, orcidUrl, linkedinUrl, threadsUrl],
+    sameAs: [scholarUrl, orcidUrl, linkedinUrl, threadsUrl, youtubeUrl],
   },
 };
 
@@ -43,6 +44,7 @@ const footerLinks = [
   { label: "ORCID", href: orcidUrl },
   { label: "LinkedIn", href: linkedinUrl },
   { label: "Threads", href: threadsUrl },
+  { label: "YouTube", href: youtubeUrl },
 ];
 
 const positions = [
@@ -290,6 +292,9 @@ export default function Home() {
               </a>
               <a href={linkedinUrl} target="_blank" rel="noreferrer">
                 LinkedIn <ArrowUpRight />
+              </a>
+              <a href={youtubeUrl} target="_blank" rel="noreferrer">
+                YouTube <ArrowUpRight />
               </a>
             </div>
             <p className="threads-note">
