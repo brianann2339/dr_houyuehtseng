@@ -68,8 +68,8 @@ const positions = [
 const researchExperience = [
   {
     period: "2026/03—2026/09",
-    title: "臨床研究人員（Research Fellow）",
-    detailPrefix: "日本順天堂大學醫學部附屬順天堂醫院・",
+    title: "順天堂大學醫學部附屬順天堂醫院",
+    detailPrefix: "臨床研究人員（Research Fellow）・",
     detail: "救急科",
     note: "・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊",
     href: juntendoEmergencyUrl,
@@ -81,7 +81,7 @@ const researchExperience = [
     detail: "計算成像與電腦視覺實驗室",
     note: (
       <>
-        ・腎臟類器官 3D 影像重組及生長速率影像分析・與順天堂醫院
+        ・腎臟類器官 3D 影像與生長分析・與順天堂醫院
         <a href={biochemistryLabUrl} target="_blank" rel="noopener noreferrer">
           生化学第二講座
         </a>
@@ -146,7 +146,7 @@ const education = [
   {
     period: "2019/09—2021/01",
     title: "國立臺灣大學進修推廣學院",
-    detail: "法律學分班第三十四期・結訓",
+    detail: "法律學分班第三十四期結訓",
   },
   {
     period: "2009/09—2016/06",

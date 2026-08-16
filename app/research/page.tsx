@@ -496,7 +496,7 @@ const otherWorks = [
     title: "冰凍傷口的處置與預防",
     authors: ["吳孟諭", "侯岳岑", "楊久滕"],
     detail:
-      "台灣急診醫學通訊・第三卷第四期（刊登日期：2020/08/24）・Taiwan Emergency Medicine Bulletin 3(4): e2020030405",
+      "台灣急診醫學通訊・第三卷第四期・Taiwan Emergency Medicine Bulletin 3(4): e2020030405",
     href: semBulletinUrl,
   },
 ];
