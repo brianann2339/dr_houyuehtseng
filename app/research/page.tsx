@@ -506,7 +506,7 @@ const conferencePresentations = [
     year: "2021",
     title: "機器學習應用於急診創傷病人預後預測－以基因演算法及離散化優化計算",
     detail:
-      "侯岳岑。台灣急診醫學會第十四屆第二次線上會員大會暨學術研討會，原著論文口頭發表，資料科學類（OP-2021-12），獲口頭發表佳作。",
+      "侯岳岑。原著論文口頭發表，資料科學類。台灣急診醫學會第十四屆第二次線上會員大會暨學術研討會（OP-2021-12），獲口頭發表佳作。",
     links: [
       {
         label: "官方論文發表名單 PDF",
@@ -526,7 +526,7 @@ const conferencePresentations = [
     year: "2020",
     title: "Progressive whole abdominal pain since traffic accident 4 days ago",
     detail:
-      "侯岳岑。圖片展示海報，官方名單所列主訴。台灣急診醫學會第十四屆第一次會員大會暨學術研討會（Photo-33）。",
+      "侯岳岑。圖片展示海報。台灣急診醫學會第十四屆第一次會員大會暨學術研討會（Photo-33）。",
     links: [
       {
         label: "官方投稿接受名單 PDF",
@@ -538,7 +538,7 @@ const conferencePresentations = [
     year: "2019",
     title: "不同機器學習模型應用於急診外傷病人之預後預測：回溯性世代研究",
     detail:
-      "侯岳岑。台灣急診醫學會第十三屆第二次會員大會暨學術研討會，原著論文海報，臨床類（P-2019-09）。",
+      "侯岳岑。原著論文海報，臨床類。台灣急診醫學會第十三屆第二次會員大會暨學術研討會（P-2019-09）。",
     links: [
       {
         label: "官方論文發表明細 PDF",
@@ -551,7 +551,7 @@ const conferencePresentations = [
     title:
       "內頸靜脈栓塞個案報告，Lemierre’s syndrome 與 Trousseau’s syndrome 之鑑別診斷",
     detail:
-      "侯岳岑。台灣急診醫學會 2018 年冬季學術討論會，病例報告海報（18WC-31）。",
+      "侯岳岑。病例報告海報。台灣急診醫學會2018年冬季學術討論會（18WC-31）。",
     links: [
       {
         label: "官方病例報告海報接受名單 PDF",

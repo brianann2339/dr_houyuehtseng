@@ -358,6 +358,16 @@ test("renders the complete research archive", async () => {
     /內頸靜脈栓塞個案報告，Lemierre’s syndrome 與 Trousseau’s syndrome 之鑑別診斷/,
   );
   assert.match(html, /18WC-31/);
+  const expectedConferenceDetails = [
+    "侯岳岑。原著論文口頭發表，資料科學類。台灣急診醫學會第十四屆第二次線上會員大會暨學術研討會（OP-2021-12），獲口頭發表佳作。",
+    "侯岳岑。圖片展示海報。台灣急診醫學會第十四屆第一次會員大會暨學術研討會（Photo-33）。",
+    "侯岳岑。原著論文海報，臨床類。台灣急診醫學會第十三屆第二次會員大會暨學術研討會（P-2019-09）。",
+    "侯岳岑。病例報告海報。台灣急診醫學會2018年冬季學術討論會（18WC-31）。",
+  ];
+  for (const detail of expectedConferenceDetails) {
+    assert.match(visibleText(html), new RegExp(detail));
+  }
+  assert.doesNotMatch(visibleText(html), /官方名單所列主訴/);
   const officialConferenceLinks = [
     "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%290913.pdf",
     "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E5%8E%9F%E8%91%97%E8%AB%96%E6%96%87%E5%8F%A3%E9%A0%AD%E7%99%BC%E8%A1%A8%E6%98%8E%E7%B4%B0%28%E5%90%AB%E7%99%BC%E8%A1%A8%E6%99%82%E9%96%93%290913.pdf",
