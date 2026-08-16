@@ -93,16 +93,13 @@ test("renders the finished personal website", async () => {
   );
   assert.match(
     text,
-    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・腎臟類器官 3D 影像建模與生長分析（順天堂醫院\s*生化学第二講座\s*）・指導教授：佐藤いまり/,
+    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・腎臟類器官 3D 影像建模與生長分析・指導教授：佐藤いまり/,
   );
   assert.match(
     html,
     /<a[^>]*href="https:\/\/research\.nii\.ac\.jp\/pbv\/"[^>]*>計算成像與電腦視覺實驗室<\/a>/,
   );
-  assert.match(
-    html,
-    /href="https:\/\/researchmap\.jp\/y_wada73\/research_experience\/51236129"[^>]*>生化学第二講座<\/a>/,
-  );
+  assert.doesNotMatch(html, /researchmap\.jp\/y_wada73\/research_experience\/51236129/);
   assert.doesNotMatch(
     html,
     /<a[^>]*href="https:\/\/research\.nii\.ac\.jp\/pbv\/"[^>]*>訪問研究員/,

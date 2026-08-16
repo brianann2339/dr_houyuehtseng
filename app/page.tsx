@@ -18,8 +18,6 @@ const niiLabUrl = "https://research.nii.ac.jp/pbv/";
 const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
 const juntendoEmergencyUrl =
   "https://hosp.juntendo.ac.jp/clinic/department/kyukyu/staff.html";
-const biochemistryLabUrl =
-  "https://researchmap.jp/y_wada73/research_experience/51236129";
 
 const profilePageStructuredData = {
   "@context": "https://schema.org",
@@ -79,15 +77,7 @@ const researchExperience = [
     title: "日本國立情報學研究所（NII）",
     detailPrefix: "訪問研究員・",
     detail: "計算成像與電腦視覺實驗室",
-    note: (
-      <>
-        ・腎臟類器官 3D 影像建模與生長分析（順天堂醫院
-        <a href={biochemistryLabUrl} target="_blank" rel="noopener noreferrer">
-          生化学第二講座
-        </a>
-        ）・指導教授：佐藤いまり
-      </>
-    ),
+    note: "・腎臟類器官 3D 影像建模與生長分析・指導教授：佐藤いまり",
     href: niiLabUrl,
   },
   {
