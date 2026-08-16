@@ -213,6 +213,7 @@ test("keeps the footer fixed without covering page content", async () => {
 });
 
 test("renders the complete research archive", async () => {
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   const response = await render("/research");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -229,6 +230,10 @@ test("renders the complete research archive", async () => {
   assert.match(html, /其他著作/);
   assert.match(html, /歷年研究計畫/);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
+  assert.match(
+    css,
+    /\.publication-title,\s*\.plan-item h3,\s*\.other-work-item h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*16\.5px;[^}]*font-weight:\s*700;[^}]*line-height:\s*1\.75;/s,
+  );
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
   assert.equal((html.match(/class="publication-year"/g) ?? []).length, 8);
   assert.match(html, /class="publication-groups"/);
