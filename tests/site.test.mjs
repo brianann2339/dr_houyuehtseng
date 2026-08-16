@@ -234,6 +234,8 @@ test("renders the complete research archive", async () => {
     css,
     /\.publication-title,\s*\.plan-item h3,\s*\.other-work-item h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*16\.5px;[^}]*font-weight:\s*700;[^}]*line-height:\s*1\.75;/s,
   );
+  assert.match(css, /\.publication-year h3\s*{[^}]*font-size:\s*14px;/s);
+  assert.match(css, /\.plan-year,\s*\.other-work-year\s*{[^}]*font-size:\s*14px;/s);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
   assert.equal((html.match(/class="publication-year"/g) ?? []).length, 8);
   assert.match(html, /class="publication-groups"/);
