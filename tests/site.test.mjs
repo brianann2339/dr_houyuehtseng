@@ -230,8 +230,8 @@ test("renders the complete research archive", async () => {
   assert.match(html, /歷年研究計畫/);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
-  assert.equal((html.match(/class="publication-year"/g) ?? []).length, 26);
-  assert.doesNotMatch(html, /class="publication-groups"/);
+  assert.equal((html.match(/class="publication-year"/g) ?? []).length, 8);
+  assert.match(html, /class="publication-groups"/);
   assert.equal(
     (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
     1,
