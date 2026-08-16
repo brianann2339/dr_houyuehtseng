@@ -620,27 +620,10 @@ section {
   margin-top: 5px;
 }
 
-.publication-groups,
-.plan-list {
+.publication-list,
+.plan-list,
+.other-work-list {
   border-top: 1px solid var(--line);
-}
-
-.publication-year {
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  gap: 30px;
-  grid-template-columns: 92px 1fr;
-  padding: 28px 0;
-}
-
-.publication-year h3 {
-  align-self: start;
-  color: var(--orange-text);
-  font-family: "LXGW WenKai TC", "Kaiti TC", serif;
-  font-size: 21px;
-  margin: 0;
-  position: sticky;
-  top: 112px;
 }
 
 .publication-list {
@@ -649,28 +632,40 @@ section {
   padding: 0;
 }
 
-.publication-item {
-  padding: 0 0 20px;
+.publication-item,
+.plan-item,
+.other-work-item {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 92px 1fr;
+  padding: 24px 0;
 }
 
-.publication-item + .publication-item {
-  border-top: 1px solid var(--line);
-  padding-top: 20px;
+.publication-year,
+.plan-year,
+.other-work-year {
+  color: var(--orange-text);
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.publication-title {
+.publication-title,
+.plan-item h3,
+.other-work-item h3 {
   display: block;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.65;
+  font-size: 16.5px;
+  line-height: 1.75;
+  margin: 0;
 }
 
-.publication-authors {
+.publication-authors,
+.plan-item p,
+.other-work-item p {
   color: var(--soft);
   font-size: 13.5px;
   line-height: 1.7;
-  margin: 5px 0 0;
+  margin: 4px 0 0;
 }
 
 .self-author {
@@ -691,70 +686,14 @@ section {
   color: var(--soft);
   display: flex;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: 13.5px;
   gap: 0 14px;
   line-height: 1.7;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .publication-doi {
   overflow-wrap: anywhere;
-}
-
-.plan-item {
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  gap: 30px;
-  grid-template-columns: 92px 1fr;
-  padding: 24px 0;
-}
-
-.plan-year {
-  color: var(--orange-text);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.plan-item h3 {
-  font-size: 16.5px;
-  line-height: 1.75;
-  margin: 0;
-}
-
-.plan-item p {
-  color: var(--soft);
-  font-size: 13.5px;
-  margin: 4px 0 0;
-}
-
-.other-work-list {
-  border-top: 1px solid var(--line);
-}
-
-.other-work-item {
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  gap: 30px;
-  grid-template-columns: 92px 1fr;
-  padding: 24px 0;
-}
-
-.other-work-year {
-  color: var(--orange-text);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.other-work-item h3 {
-  font-size: 16.5px;
-  line-height: 1.75;
-  margin: 0;
-}
-
-.other-work-item p {
-  color: var(--soft);
-  font-size: 13.5px;
-  margin: 4px 0 0;
 }
 
 .other-work-authors strong {
@@ -924,15 +863,11 @@ footer {
     gap: 18px;
   }
 
-  .publication-year,
+  .publication-item,
   .plan-item,
   .other-work-item {
     gap: 12px;
     grid-template-columns: 1fr;
-  }
-
-  .publication-year h3 {
-    position: static;
   }
 
   .row {

@@ -501,8 +501,6 @@ const otherWorks = [
   },
 ];
 
-const publicationYears = [...new Set(publications.map((publication) => publication.year))];
-
 const footerLinks = [
   { label: "Google Scholar", href: scholarUrl },
   { label: "ORCID", href: orcidUrl },
@@ -585,58 +583,49 @@ export default function Research() {
             清單最後整理於 2026/08，依出版年份排列；引用次數會持續變動，因此不固定顯示於網站。
             <span className="publication-legend">† 侯岳岑為共同第一作者</span>
           </p>
-          <div className="publication-groups">
-            {publicationYears.map((year) => (
-              <section className="publication-year" key={year} aria-labelledby={`year-${year}`}>
-                <h3 id={`year-${year}`}>{year}</h3>
-                <ol className="publication-list">
-                  {publications
-                    .filter((publication) => publication.year === year)
-                    .map((publication) => (
-                      <li className="publication-item" key={publication.title}>
-                        <strong className="publication-title">{publication.title}</strong>
-                        <p className="publication-authors">
-                          {publication.authors.map((author, index) => (
-                            <span
-                              className="publication-author"
-                              key={`${publication.doi}-${author}-${index}`}
-                            >
-                              {index > 0 ? ", " : ""}
-                              {author === "YT Hou" ? (
-                                <strong className="self-author">
-                                  {author}
-                                  {publication.coFirst ? (
-                                    <sup
-                                      className="co-first-citation"
-                                      aria-label="共同第一作者"
-                                    >
-                                      †
-                                    </sup>
-                                  ) : null}
-                                </strong>
-                              ) : (
-                                author
-                              )}
-                            </span>
-                          ))}
-                        </p>
-                        <div className="publication-source">
-                          <span className="publication-journal">{publication.journal}</span>
-                          <a
-                            className="publication-doi"
-                            href={`https://doi.org/${publication.doi}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            DOI: {publication.doi}
-                          </a>
-                        </div>
-                      </li>
+          <ol className="publication-list">
+            {publications.map((publication) => (
+              <li className="publication-item" key={publication.doi}>
+                <span className="publication-year">{publication.year}</span>
+                <div>
+                  <strong className="publication-title">{publication.title}</strong>
+                  <p className="publication-authors">
+                    {publication.authors.map((author, index) => (
+                      <span
+                        className="publication-author"
+                        key={`${publication.doi}-${author}-${index}`}
+                      >
+                        {index > 0 ? ", " : ""}
+                        {author === "YT Hou" ? (
+                          <strong className="self-author">
+                            {author}
+                            {publication.coFirst ? (
+                              <sup className="co-first-citation" aria-label="共同第一作者">
+                                †
+                              </sup>
+                            ) : null}
+                          </strong>
+                        ) : (
+                          author
+                        )}
+                      </span>
                     ))}
-                </ol>
-              </section>
+                  </p>
+                  <div className="publication-source">
+                    <span className="publication-journal">{publication.journal}</span>
+                    <a
+                      className="publication-doi"
+                      href={`https://doi.org/${publication.doi}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      DOI: {publication.doi}
+                    </a>
+                  </div>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
         <section className="research-section" id="other-works">
