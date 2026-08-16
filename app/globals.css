@@ -622,7 +622,8 @@ section {
 
 .publication-groups,
 .plan-list,
-.other-work-list {
+.other-work-list,
+.conference-list {
   border-top: 1px solid var(--line);
 }
 
@@ -662,7 +663,8 @@ section {
 
 .publication-title,
 .plan-item h3,
-.other-work-item h3 {
+.other-work-item h3,
+.conference-item h3 {
   display: block;
   font-family: inherit;
   font-size: 16.5px;
@@ -706,7 +708,8 @@ section {
 }
 
 .plan-item,
-.other-work-item {
+.other-work-item,
+.conference-item {
   border-bottom: 1px solid var(--line);
   display: grid;
   gap: 30px;
@@ -715,14 +718,16 @@ section {
 }
 
 .plan-year,
-.other-work-year {
+.other-work-year,
+.conference-year {
   color: var(--orange-text);
   font-size: 14px;
   font-weight: 700;
 }
 
 .plan-item p,
-.other-work-item p {
+.other-work-item p,
+.conference-item p {
   color: var(--soft);
   font-size: 13.5px;
   line-height: 1.7;
@@ -732,6 +737,17 @@ section {
 .other-work-authors strong {
   color: var(--ink);
   font-weight: 700;
+}
+
+.conference-links {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.conference-links a {
+  border-bottom: 1px solid var(--line);
+  color: var(--moss-text);
+  padding-bottom: 1px;
 }
 
 /* ---------- Footer ---------- */
@@ -898,7 +914,8 @@ footer {
 
   .publication-year,
   .plan-item,
-  .other-work-item {
+  .other-work-item,
+  .conference-item {
     gap: 12px;
     grid-template-columns: 1fr;
   }

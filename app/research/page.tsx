@@ -501,6 +501,66 @@ const otherWorks = [
   },
 ];
 
+const conferencePresentations = [
+  {
+    year: "2021",
+    title: "機器學習應用於急診創傷病人預後預測－以基因演算法及離散化優化計算",
+    detail:
+      "侯岳岑。台灣急診醫學會第十四屆第二次線上會員大會暨學術研討會，原著論文口頭發表，資料科學類（OP-2021-12），獲口頭發表佳作。",
+    links: [
+      {
+        label: "官方論文發表名單 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%290913.pdf",
+      },
+      {
+        label: "官方口頭發表時間明細 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E5%8E%9F%E8%91%97%E8%AB%96%E6%96%87%E5%8F%A3%E9%A0%AD%E7%99%BC%E8%A1%A8%E6%98%8E%E7%B4%B0%28%E5%90%AB%E7%99%BC%E8%A1%A8%E6%99%82%E9%96%93%290913.pdf",
+      },
+      {
+        label: "官方獲獎名單 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/2021%E5%B9%B4%E6%9C%83%E7%8D%B2%E7%8D%8E%E5%90%8D%E5%96%AE%E5%85%AC%E5%91%8A.pdf",
+      },
+    ],
+  },
+  {
+    year: "2020",
+    title: "Progressive whole abdominal pain since traffic accident 4 days ago",
+    detail:
+      "侯岳岑。圖片展示海報，官方名單所列主訴。台灣急診醫學會第十四屆第一次會員大會暨學術研討會（Photo-33）。",
+    links: [
+      {
+        label: "官方投稿接受名單 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/2020%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%290716.pdf",
+      },
+    ],
+  },
+  {
+    year: "2019",
+    title: "不同機器學習模型應用於急診外傷病人之預後預測：回溯性世代研究",
+    detail:
+      "侯岳岑。台灣急診醫學會第十三屆第二次會員大會暨學術研討會，原著論文海報，臨床類（P-2019-09）。",
+    links: [
+      {
+        label: "官方論文發表明細 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/2019%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%29.pdf",
+      },
+    ],
+  },
+  {
+    year: "2018",
+    title:
+      "內頸靜脈栓塞個案報告，Lemierre’s syndrome 與 Trousseau’s syndrome 之鑑別診斷",
+    detail:
+      "侯岳岑。台灣急診醫學會 2018 年冬季學術討論會，病例報告海報（18WC-31）。",
+    links: [
+      {
+        label: "官方病例報告海報接受名單 PDF",
+        href: "https://tsem.blob.core.windows.net/newscontainer/2018%E5%B9%B4%E5%86%AC%E5%AD%A3%E5%AD%B8%E8%A1%93%E8%A8%8E%E8%AB%96%E6%9C%83-%E7%97%85%E4%BE%8B%E5%A0%B1%E5%91%8A%E6%B5%B7%E5%A0%B1%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE.pdf",
+      },
+    ],
+  },
+];
+
 const publicationYears = [...new Set(publications.map((publication) => publication.year))];
 
 const footerLinks = [
@@ -520,7 +580,7 @@ const ArrowUpRight = () => (
 export const metadata: Metadata = {
   title: "研究成果｜侯岳岑 Yueh-Tseng Hou",
   description:
-    "侯岳岑的論文發表與歷年研究計畫，涵蓋急診醫學、敗血症決策支援、外傷預後、休克指數與醫學影像 AI。",
+    "侯岳岑的論文發表、學術會議發表與歷年研究計畫，涵蓋急診醫學、敗血症決策支援、外傷預後、休克指數與醫學影像 AI。",
   alternates: { canonical: researchUrl },
   robots: { index: true, follow: true },
 };
@@ -550,20 +610,21 @@ export default function Research() {
 
       <main className="wrap research-page" id="research-content" tabIndex={-1}>
         <div className="research-hero" id="top">
-          <p className="kicker">PUBLICATIONS・PROJECTS</p>
+          <p className="kicker">PUBLICATIONS・PRESENTATIONS・PROJECTS</p>
           <h1>研究成果</h1>
           <p className="research-intro">
             研究從急診現場的問題出發，涵蓋敗血症決策支援、外傷與急診預後、休克指數，以及醫學影像
-            AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單、台灣急診醫學通訊著作，以及可由公開來源確認的歷年研究計畫。
+            AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單、台灣急診醫學通訊著作、學術會議發表，以及可由公開來源確認的歷年研究計畫。
           </p>
           <div className="research-overview" aria-label="研究成果摘要">
             <span>{publications.length} 篇論文</span>
+            <span>{conferencePresentations.length} 項會議發表</span>
             <span>{researchProjects.length} 筆年度計畫紀錄</span>
-            <span>2018—2026</span>
           </div>
           <nav className="research-subnav" aria-label="研究成果頁內導覽">
             <a href="#publications">論文發表</a>
             <a href="#other-works">其他著作</a>
+            <a href="#conference-presentations">學術會議發表</a>
             <a href="#projects">歷年研究計畫</a>
           </nav>
           <div className="links">
@@ -666,6 +727,40 @@ export default function Research() {
                     ))}
                   </p>
                   <p>{work.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="research-section" id="conference-presentations">
+          <div className="sec-title">
+            <h2>學術會議發表</h2>
+            <i aria-hidden="true"></i>
+          </div>
+          <p className="research-note">
+            收錄台灣急診醫學會之口頭、海報與病例報告發表；各筆附官方名單。
+          </p>
+          <div className="conference-list">
+            {conferencePresentations.map((presentation) => (
+              <article
+                className="conference-item"
+                key={`${presentation.year}-${presentation.title}`}
+              >
+                <span className="conference-year">{presentation.year}</span>
+                <div>
+                  <h3>{presentation.title}</h3>
+                  <p>{presentation.detail}</p>
+                  <p className="conference-links">
+                    {presentation.links.map((link, index) => (
+                      <span key={link.href}>
+                        {index > 0 ? "｜" : null}
+                        <a href={link.href} target="_blank" rel="noreferrer">
+                          {link.label}
+                        </a>
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </article>
             ))}

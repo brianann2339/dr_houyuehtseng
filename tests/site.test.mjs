@@ -225,17 +225,18 @@ test("renders the complete research archive", async () => {
   assert.match(html, /<main[^>]*id="research-content"[^>]*tabindex="-1"/i);
   assert.match(html, /論文發表/);
   assert.match(html, /其他著作/);
+  assert.match(html, /學術會議發表/);
   assert.match(html, /歷年研究計畫/);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.match(
     css,
-    /\.publication-title,\s*\.plan-item h3,\s*\.other-work-item h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*16\.5px;[^}]*font-weight:\s*700;[^}]*line-height:\s*1\.75;/s,
+    /\.publication-title,\s*\.plan-item h3,\s*\.other-work-item h3,\s*\.conference-item h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*16\.5px;[^}]*font-weight:\s*700;[^}]*line-height:\s*1\.75;/s,
   );
   assert.match(
     css,
     /\.publication-year h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s,
   );
-  assert.match(css, /\.plan-year,\s*\.other-work-year\s*{[^}]*font-size:\s*14px;/s);
+  assert.match(css, /\.plan-year,\s*\.other-work-year,\s*\.conference-year\s*{[^}]*font-size:\s*14px;/s);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
   assert.equal((html.match(/class="publication-year"/g) ?? []).length, 8);
   assert.match(html, /class="publication-groups"/);
@@ -339,6 +340,35 @@ test("renders the complete research archive", async () => {
   assert.doesNotMatch(visibleText(html), /\bet al\./i);
   assert.equal((html.match(/class="plan-item"/g) ?? []).length, 7);
   assert.equal((html.match(/class="other-work-item"/g) ?? []).length, 1);
+  assert.equal((html.match(/class="conference-item"/g) ?? []).length, 4);
+  assert.match(visibleText(html), /4 項會議發表/);
+  assert.match(html, /href="#conference-presentations">學術會議發表<\/a>/);
+  assert.match(
+    html,
+    /機器學習應用於急診創傷病人預後預測－以基因演算法及離散化優化計算/,
+  );
+  assert.match(html, /OP-2021-12/);
+  assert.match(html, /獲口頭發表佳作/);
+  assert.match(html, /Progressive whole abdominal pain since traffic accident 4 days ago/);
+  assert.match(html, /Photo-33/);
+  assert.match(html, /不同機器學習模型應用於急診外傷病人之預後預測：回溯性世代研究/);
+  assert.match(html, /P-2019-09/);
+  assert.match(
+    html,
+    /內頸靜脈栓塞個案報告，Lemierre’s syndrome 與 Trousseau’s syndrome 之鑑別診斷/,
+  );
+  assert.match(html, /18WC-31/);
+  const officialConferenceLinks = [
+    "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%290913.pdf",
+    "https://tsem.blob.core.windows.net/newscontainer/%E7%B7%9A%E4%B8%8A%E7%99%BC%E8%A1%A8-2021%E5%B9%B4%E5%8E%9F%E8%91%97%E8%AB%96%E6%96%87%E5%8F%A3%E9%A0%AD%E7%99%BC%E8%A1%A8%E6%98%8E%E7%B4%B0%28%E5%90%AB%E7%99%BC%E8%A1%A8%E6%99%82%E9%96%93%290913.pdf",
+    "https://tsem.blob.core.windows.net/newscontainer/2021%E5%B9%B4%E6%9C%83%E7%8D%B2%E7%8D%8E%E5%90%8D%E5%96%AE%E5%85%AC%E5%91%8A.pdf",
+    "https://tsem.blob.core.windows.net/newscontainer/2020%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%290716.pdf",
+    "https://tsem.blob.core.windows.net/newscontainer/2019%E5%B9%B4%E6%8A%95%E7%A8%BF%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE%28%E5%85%AC%E5%91%8A%E7%B7%A8%E8%99%9F%29.pdf",
+    "https://tsem.blob.core.windows.net/newscontainer/2018%E5%B9%B4%E5%86%AC%E5%AD%A3%E5%AD%B8%E8%A1%93%E8%A8%8E%E8%AB%96%E6%9C%83-%E7%97%85%E4%BE%8B%E5%A0%B1%E5%91%8A%E6%B5%B7%E5%A0%B1%E6%8E%A5%E5%8F%97%E5%90%8D%E5%96%AE.pdf",
+  ];
+  for (const href of officialConferenceLinks) {
+    assert.match(html, new RegExp(`href="${href}"`));
+  }
   assert.match(
     html,
     /<a href="https:\/\/www\.sem\.org\.tw\/Ejournal\/Detail\/239"[^>]*>冰凍傷口的處置與預防<\/a>/,
