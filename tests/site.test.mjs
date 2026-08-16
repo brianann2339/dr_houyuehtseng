@@ -85,15 +85,23 @@ test("renders the finished personal website", async () => {
   assert.match(html, /順天堂醫院救急科・2026\/03—09/);
   assert.match(
     text,
-    /救急科 Research Fellow・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊/,
+    /2026\/03—2026\/09 臨床研究人員（Research Fellow） 日本順天堂大學醫學部附屬順天堂醫院・\s*救急科\s*・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊/,
+  );
+  assert.match(
+    html,
+    /href="https:\/\/hosp\.juntendo\.ac\.jp\/clinic\/department\/kyukyu\/staff\.html"[^>]*>救急科<\/a>/,
   );
   assert.match(
     text,
-    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・指導教授：佐藤いまり/,
+    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・腎臟類器官 3D 影像重組及生長速率影像分析・與順天堂醫院\s*生化学第二講座\s*合作・指導教授：佐藤いまり/,
   );
   assert.match(
     html,
     /<a[^>]*href="https:\/\/research\.nii\.ac\.jp\/pbv\/"[^>]*>計算成像與電腦視覺實驗室<\/a>/,
+  );
+  assert.match(
+    html,
+    /href="https:\/\/researchmap\.jp\/y_wada73\/research_experience\/51236129"[^>]*>生化学第二講座<\/a>/,
   );
   assert.doesNotMatch(
     html,
@@ -111,6 +119,7 @@ test("renders the finished personal website", async () => {
     text,
     /2012\/06—2013\/06 慈濟大學醫學系藥毒所 小鼠行為研究室・專題研究：The pathophysiological roles of Mcl-1 in learning & memory function with Camk2α-cre derived mutant mouse・指導教授：陳松鶴/,
   );
+  assert.match(text, /法律學分班第三十四期・結訓/);
   assert.doesNotMatch(text, /臨床與研究/);
   assert.doesNotMatch(text, /急救科/);
   assert.match(text, /台北慈濟醫院急診部 專任主治醫師/);
@@ -217,6 +226,7 @@ test("renders the complete research archive", async () => {
   assert.doesNotMatch(html, /noindex/i);
   assert.match(html, /<main[^>]*id="research-content"[^>]*tabindex="-1"/i);
   assert.match(html, /論文發表/);
+  assert.match(html, /其他著作/);
   assert.match(html, /歷年研究計畫/);
   assert.match(html, /class="mark"[^>]*>\s*侯岳岑醫師<small>YUEH-TSENG HOU<\/small>/i);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);
@@ -319,6 +329,15 @@ test("renders the complete research archive", async () => {
   assert.doesNotMatch(html, /Tzu-Chi Medical Journal/);
   assert.doesNotMatch(visibleText(html), /\bet al\./i);
   assert.equal((html.match(/class="plan-item"/g) ?? []).length, 7);
+  assert.equal((html.match(/class="other-work-item"/g) ?? []).length, 1);
+  assert.match(
+    html,
+    /<a href="https:\/\/www\.sem\.org\.tw\/Ejournal\/Detail\/239"[^>]*>冰凍傷口的處置與預防<\/a>/,
+  );
+  assert.match(
+    visibleText(html),
+    /吳孟諭\s*、\s*侯岳岑\s*、\s*楊久滕\s+台灣急診醫學通訊・第三卷第四期（刊登日期：2020\/08\/24）・Taiwan Emergency Medicine Bulletin 3\(4\): e2020030405/,
+  );
   assert.match(html, /Efficacy of a Sepsis Clinical Decision Support System/);
   assert.match(
     html,

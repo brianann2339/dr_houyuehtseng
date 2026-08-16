@@ -16,6 +16,10 @@ const threadsUrl = "https://www.threads.com/@hou_care_you";
 const youtubeUrl = "https://www.youtube.com/@hou_care_you";
 const niiLabUrl = "https://research.nii.ac.jp/pbv/";
 const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
+const juntendoEmergencyUrl =
+  "https://hosp.juntendo.ac.jp/clinic/department/kyukyu/staff.html";
+const biochemistryLabUrl =
+  "https://researchmap.jp/y_wada73/research_experience/51236129";
 
 const profilePageStructuredData = {
   "@context": "https://schema.org",
@@ -56,7 +60,7 @@ const positions = [
   },
   {
     label: "研究進修",
-    role: "Research Fellow",
+    role: "臨床研究人員",
     org: "順天堂醫院救急科・2026/03—09",
   },
 ];
@@ -64,18 +68,26 @@ const positions = [
 const researchExperience = [
   {
     period: "2026/03—2026/09",
-    title: "順天堂大學醫學部附屬順天堂醫院",
-    detailPrefix: "",
-    detail: "救急科 Research Fellow・到院前資料 AI 預測分析、敗血症預測分析",
-    note: "・指導教授：近藤豊",
-    href: null,
+    title: "臨床研究人員（Research Fellow）",
+    detailPrefix: "日本順天堂大學醫學部附屬順天堂醫院・",
+    detail: "救急科",
+    note: "・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊",
+    href: juntendoEmergencyUrl,
   },
   {
     period: "2024/02—2024/08",
     title: "日本國立情報學研究所（NII）",
     detailPrefix: "訪問研究員・",
     detail: "計算成像與電腦視覺實驗室",
-    note: "・指導教授：佐藤いまり",
+    note: (
+      <>
+        ・腎臟類器官 3D 影像重組及生長速率影像分析・與順天堂醫院
+        <a href={biochemistryLabUrl} target="_blank" rel="noopener noreferrer">
+          生化学第二講座
+        </a>
+        合作・指導教授：佐藤いまり
+      </>
+    ),
     href: niiLabUrl,
   },
   {
@@ -134,7 +146,7 @@ const education = [
   {
     period: "2019/09—2021/01",
     title: "國立臺灣大學進修推廣學院",
-    detail: "法律學分班第三十四期",
+    detail: "法律學分班第三十四期・結訓",
   },
   {
     period: "2009/09—2016/06",

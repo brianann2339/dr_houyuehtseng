@@ -727,6 +727,41 @@ section {
   margin: 4px 0 0;
 }
 
+.other-work-list {
+  border-top: 1px solid var(--line);
+}
+
+.other-work-item {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 92px 1fr;
+  padding: 24px 0;
+}
+
+.other-work-year {
+  color: var(--orange-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.other-work-item h3 {
+  font-size: 16.5px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.other-work-item p {
+  color: var(--soft);
+  font-size: 13.5px;
+  margin: 4px 0 0;
+}
+
+.other-work-authors strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 /* ---------- Footer ---------- */
 
 footer {
@@ -890,7 +925,8 @@ footer {
   }
 
   .publication-year,
-  .plan-item {
+  .plan-item,
+  .other-work-item {
     gap: 12px;
     grid-template-columns: 1fr;
   }

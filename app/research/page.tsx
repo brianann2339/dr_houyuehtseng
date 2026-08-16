@@ -9,6 +9,7 @@ const linkedinUrl =
   "https://www.linkedin.com/in/%E5%B2%B3%E5%B2%91-%E4%BE%AF-676792114/";
 const threadsUrl = "https://www.threads.com/@hou_care_you";
 const youtubeUrl = "https://www.youtube.com/@hou_care_you";
+const semBulletinUrl = "https://www.sem.org.tw/Ejournal/Detail/239";
 
 const publications = [
   {
@@ -489,6 +490,17 @@ const researchProjects = [
   },
 ];
 
+const otherWorks = [
+  {
+    year: "2020",
+    title: "冰凍傷口的處置與預防",
+    authors: ["吳孟諭", "侯岳岑", "楊久滕"],
+    detail:
+      "台灣急診醫學通訊・第三卷第四期（刊登日期：2020/08/24）・Taiwan Emergency Medicine Bulletin 3(4): e2020030405",
+    href: semBulletinUrl,
+  },
+];
+
 const publicationYears = [...new Set(publications.map((publication) => publication.year))];
 
 const footerLinks = [
@@ -542,7 +554,7 @@ export default function Research() {
           <h1>研究成果</h1>
           <p className="research-intro">
             研究從急診現場的問題出發，涵蓋敗血症決策支援、外傷與急診預後、休克指數，以及醫學影像
-            AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單，以及可由公開來源確認的歷年研究計畫。
+            AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單、台灣急診醫學通訊著作，以及可由公開來源確認的歷年研究計畫。
           </p>
           <div className="research-overview" aria-label="研究成果摘要">
             <span>{publications.length} 篇論文</span>
@@ -551,6 +563,7 @@ export default function Research() {
           </div>
           <nav className="research-subnav" aria-label="研究成果頁內導覽">
             <a href="#publications">論文發表</a>
+            <a href="#other-works">其他著作</a>
             <a href="#projects">歷年研究計畫</a>
           </nav>
           <div className="links">
@@ -622,6 +635,39 @@ export default function Research() {
                     ))}
                 </ol>
               </section>
+            ))}
+          </div>
+        </section>
+
+        <section className="research-section" id="other-works">
+          <div className="sec-title">
+            <h2>其他著作</h2>
+            <i aria-hidden="true"></i>
+          </div>
+          <p className="research-note">
+            收錄台灣急診醫學通訊刊登之文章。
+          </p>
+          <div className="other-work-list">
+            {otherWorks.map((work) => (
+              <article className="other-work-item" key={work.title}>
+                <span className="other-work-year">{work.year}</span>
+                <div>
+                  <h3>
+                    <a href={work.href} target="_blank" rel="noreferrer">
+                      {work.title}
+                    </a>
+                  </h3>
+                  <p className="other-work-authors">
+                    {work.authors.map((author, index) => (
+                      <span key={author}>
+                        {index > 0 ? "、" : ""}
+                        {author === "侯岳岑" ? <strong>{author}</strong> : author}
+                      </span>
+                    ))}
+                  </p>
+                  <p>{work.detail}</p>
+                </div>
+              </article>
             ))}
           </div>
         </section>
