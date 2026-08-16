@@ -85,15 +85,15 @@ test("renders the finished personal website", async () => {
   assert.match(html, /順天堂醫院救急科・2026\/03—09/);
   assert.match(
     text,
-    /2026\/03—2026\/09 順天堂大學醫學部附屬順天堂醫院 臨床研究人員（Research Fellow）・\s*救急科\s*・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊/,
+    /2026\/03—2026\/09 順天堂大學醫學部附屬順天堂醫院 臨床研究人員・\s*救急科救急災害医学講座\s*・到院前預測分析、敗血症預測分析・指導教授：近藤豊/,
   );
   assert.match(
     html,
-    /href="https:\/\/hosp\.juntendo\.ac\.jp\/clinic\/department\/kyukyu\/staff\.html"[^>]*>救急科<\/a>/,
+    /href="https:\/\/hosp\.juntendo\.ac\.jp\/clinic\/department\/kyukyu\/staff\.html"[^>]*>救急科救急災害医学講座<\/a>/,
   );
   assert.match(
     text,
-    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・腎臟類器官 3D 影像與生長分析・與順天堂醫院\s*生化学第二講座\s*合作・指導教授：佐藤いまり/,
+    /日本國立情報學研究所（NII） 訪問研究員・\s*計算成像與電腦視覺實驗室\s*・腎臟類器官 3D 影像建模與生長分析（順天堂醫院\s*生化学第二講座\s*）・指導教授：佐藤いまり/,
   );
   assert.match(
     html,

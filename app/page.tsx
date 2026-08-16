@@ -69,9 +69,9 @@ const researchExperience = [
   {
     period: "2026/03—2026/09",
     title: "順天堂大學醫學部附屬順天堂醫院",
-    detailPrefix: "臨床研究人員（Research Fellow）・",
-    detail: "救急科",
-    note: "・到院前資料 AI 預測分析、敗血症預測分析・指導教授：近藤豊",
+    detailPrefix: "臨床研究人員・",
+    detail: "救急科救急災害医学講座",
+    note: "・到院前預測分析、敗血症預測分析・指導教授：近藤豊",
     href: juntendoEmergencyUrl,
   },
   {
@@ -81,11 +81,11 @@ const researchExperience = [
     detail: "計算成像與電腦視覺實驗室",
     note: (
       <>
-        ・腎臟類器官 3D 影像與生長分析・與順天堂醫院
+        ・腎臟類器官 3D 影像建模與生長分析（順天堂醫院
         <a href={biochemistryLabUrl} target="_blank" rel="noopener noreferrer">
           生化学第二講座
         </a>
-        合作・指導教授：佐藤いまり
+        ）・指導教授：佐藤いまり
       </>
     ),
     href: niiLabUrl,
