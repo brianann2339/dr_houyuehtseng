@@ -639,6 +639,7 @@ section {
   color: var(--orange-text);
   font-family: "LXGW WenKai TC", "Kaiti TC", serif;
   font-size: 14px;
+  font-weight: 700;
   margin: 0;
   position: sticky;
   top: 112px;
