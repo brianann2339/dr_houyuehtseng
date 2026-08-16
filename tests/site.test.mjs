@@ -233,7 +233,7 @@ test("renders the complete research archive", async () => {
   );
   assert.match(
     css,
-    /\.publication-year h3\s*{[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s,
+    /\.publication-year h3\s*{[^}]*font-family:\s*inherit;[^}]*font-size:\s*14px;[^}]*font-weight:\s*700;/s,
   );
   assert.match(css, /\.plan-year,\s*\.other-work-year\s*{[^}]*font-size:\s*14px;/s);
   assert.equal((html.match(/class="publication-item"/g) ?? []).length, 26);

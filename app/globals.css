@@ -637,7 +637,7 @@ section {
 .publication-year h3 {
   align-self: start;
   color: var(--orange-text);
-  font-family: "LXGW WenKai TC", "Kaiti TC", serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   margin: 0;
