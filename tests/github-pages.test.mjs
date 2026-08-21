@@ -1,12 +1,96 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
+import vm from "node:vm";
 
 const basePath = "/dr_houyuehtseng";
 const siteRoot = "https://brianann2339.github.io/dr_houyuehtseng";
 
 async function artifact(pathname) {
   return readFile(new URL(`../pages-dist/${pathname}`, import.meta.url), "utf8");
+}
+
+function visitorCounterScript(html) {
+  const match = html.match(
+    /<script\b[^>]*data-static-script="visitor-counter"[^>]*>([\s\S]*?)<\/script>/i,
+  );
+  assert.ok(match, "visitor counter script is present");
+  return match[1];
+}
+
+function counterContext({
+  localDate = [2026, 8, 21],
+  storage = new Map(),
+  storageDenied = false,
+  value = 1234,
+  pending = false,
+} = {}) {
+  const number = { textContent: "…" };
+  const wrapper = { hidden: false };
+  const requests = [];
+
+  class MockDate {
+    getFullYear() {
+      return localDate[0];
+    }
+
+    getMonth() {
+      return localDate[1] - 1;
+    }
+
+    getDate() {
+      return localDate[2];
+    }
+
+    toISOString() {
+      return localDate[3] ?? `${localDate[0]}-01-01T00:00:00.000Z`;
+    }
+
+    static now() {
+      return 1;
+    }
+  }
+
+  const context = {
+    Date: MockDate,
+    document: {
+      getElementById(id) {
+        return id === "visitor-count-number" ? number : wrapper;
+      },
+    },
+    fetch(url) {
+      requests.push(url);
+      if (pending) return new Promise(() => {});
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ data: { up_count: value } }),
+      });
+    },
+    localStorage: {
+      getItem(key) {
+        if (storageDenied) throw new Error("storage denied");
+        return storage.get(key) ?? null;
+      },
+      removeItem(key) {
+        if (storageDenied) throw new Error("storage denied");
+        storage.delete(key);
+      },
+      setItem(key, nextValue) {
+        if (storageDenied) throw new Error("storage denied");
+        storage.set(key, nextValue);
+      },
+    },
+    location: {
+      hostname: "brianann2339.github.io",
+      protocol: "https:",
+    },
+  };
+
+  return { context, number, requests, storage, wrapper };
+}
+
+async function settle() {
+  await new Promise((resolve) => setImmediate(resolve));
 }
 
 test("exports a static GitHub Pages artifact", async () => {
@@ -37,7 +121,29 @@ test("exports a static GitHub Pages artifact", async () => {
   assert.match(home, new RegExp(`href="${basePath}/assets/site\\.css"`));
   assert.match(research, new RegExp(`href="${basePath}/#experience"`));
   assert.doesNotMatch(`${home}${research}`, /rel="modulepreload"/i);
-  assert.doesNotMatch(`${home}${research}`, /<script(?![^>]*application\/ld\+json)/i);
+  const staticPages = `${home}${research}`;
+  assert.equal(
+    (staticPages.match(/data-static-script="visitor-counter"/g) ?? []).length,
+    2,
+  );
+  assert.equal(
+    (
+      staticPages.match(
+        /https:\/\/api\.counterapi\.dev\/v2\/yueh-tseng-hou\/yueh-tseng-hou-visits/g,
+      ) ?? []
+    ).length,
+    2,
+  );
+  const withoutAllowedScripts = staticPages
+    .replace(
+      /<script\b[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi,
+      "",
+    )
+    .replace(
+      /<script\b[^>]*data-static-script="visitor-counter"[^>]*>[\s\S]*?<\/script>/gi,
+      "",
+    );
+  assert.doesNotMatch(withoutAllowedScripts, /<script\b/i);
   assert.doesNotMatch(`${home}${research}`, /\/_next\//);
 });
 
@@ -53,4 +159,38 @@ test("exports GitHub Pages crawl metadata", async () => {
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
     [`${siteRoot}/`, `${siteRoot}/research/`],
   );
+});
+
+test("counts at most once per local day and hides invalid responses", async () => {
+  const home = await artifact("index.html");
+  const script = visitorCounterScript(home);
+  const storage = new Map();
+  const localDate = [2026, 8, 21, "2026-08-20T23:30:00.000Z"];
+
+  const first = counterContext({ localDate, pending: true, storage });
+  vm.runInNewContext(script, first.context);
+  assert.match(first.requests[0], /\/up\?t=1$/);
+  assert.equal(storage.get("yueh_tseng_hou_visit_day_v1"), "2026-08-21");
+
+  const concurrent = counterContext({
+    localDate: [2026, 8, 21, "2026-08-21T00:30:00.000Z"],
+    storage,
+  });
+  vm.runInNewContext(script, concurrent.context);
+  await settle();
+  assert.doesNotMatch(concurrent.requests[0], /\/up\b/);
+
+  const denied = counterContext({ storageDenied: true });
+  vm.runInNewContext(script, denied.context);
+  await settle();
+  assert.doesNotMatch(denied.requests[0], /\/up\b/);
+
+  for (const value of [null, -1, 1.5]) {
+    const invalid = counterContext({ value });
+    vm.runInNewContext(script, invalid.context);
+    await settle();
+    assert.equal(invalid.wrapper.hidden, true);
+    assert.equal(invalid.number.textContent, "…");
+    assert.equal(invalid.storage.has("yueh_tseng_hou_visit_day_v1"), false);
+  }
 });

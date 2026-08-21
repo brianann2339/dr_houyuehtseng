@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { researchUrl } from "../site";
+import VisitorCounter from "../visitor-counter";
 
 const scholarUrl =
   "https://scholar.google.com/citations?user=F2RvQloAAAAJ&hl=zh-TW";
@@ -799,7 +800,10 @@ export default function Research() {
               </a>
             ))}
           </div>
-          <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
+          <div className="footer-meta">
+            <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
+            <VisitorCounter />
+          </div>
         </div>
       </footer>
     </>

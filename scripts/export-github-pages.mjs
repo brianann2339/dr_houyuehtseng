@@ -53,7 +53,11 @@ function prefixRootPath(attribute, quote, value) {
 function toStaticHtml(html) {
   const withoutRuntime = html
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (script) =>
-      /type=["']application\/ld\+json["']/i.test(script) ? script : "",
+      /type=["']application\/ld\+json["']|data-static-script=["']visitor-counter["']/i.test(
+        script,
+      )
+        ? script
+        : "",
     )
     .replace(/<link\b[^>]*>/gi, (link) =>
       /rel=["']modulepreload["']/i.test(link) ? "" : link,

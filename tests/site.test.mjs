@@ -196,6 +196,14 @@ test("renders the finished personal website", async () => {
   );
   assert.match(html, /href="tel:\+886266289779;ext=47288"/);
   assert.match(html, /href="mailto:xde03012@tzuchi\.com\.tw"/);
+  assert.match(html, /👣 累計來訪/);
+  assert.match(html, /id="visitor-count-number">…<\/strong> 人次/);
+  assert.match(
+    html,
+    /https:\/\/api\.counterapi\.dev\/v2\/yueh-tseng-hou\/yueh-tseng-hou-visits/,
+  );
+  assert.match(html, /yueh_tseng_hou_visit_day_v1/);
+  assert.match(html, /shouldIncrement \? "\/up" : ""/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/i);
 });
 
@@ -205,7 +213,13 @@ test("keeps the footer fixed without covering page content", async () => {
   assert.match(css, /--footer-reserve:\s*78px/);
   assert.match(css, /body\s*{[^}]*padding-bottom:\s*var\(--footer-reserve\)/s);
   assert.match(css, /footer\s*{[^}]*bottom:\s*0;[^}]*position:\s*fixed;/s);
+  assert.match(
+    css,
+    /@media \(min-width: 761px\) and \(max-width: 1023px\)\s*{\s*:root\s*{[^}]*--footer-reserve:\s*120px;/s,
+  );
   assert.match(css, /--footer-reserve:\s*calc\(106px \+ env\(safe-area-inset-bottom\)\)/);
+  assert.match(css, /\.footer-meta\s*{[^}]*display:\s*flex;/s);
+  assert.match(css, /\.visitor-count\s*{[^}]*white-space:\s*nowrap;/s);
   assert.doesNotMatch(css, /content:\s*"[「」]"/);
 });
 
@@ -244,6 +258,8 @@ test("renders the complete research archive", async () => {
     (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
     1,
   );
+  assert.match(html, /👣 累計來訪/);
+  assert.match(html, /id="visitor-count-number">…<\/strong> 人次/);
   const expectedAuthors = [
     "YT Ho, YC Yang, HK Huang, JL Hong, DS Chien, YT Hou, PC Lin, GT Yiang, MY Wu",
     "YT Hou, MY Wu, YL Chen, TH Liu, RT Cheng, PL Hsu, AK Chao, CC Huang, FW Cheng, PL Lai, IF Wu, GT Yiang",

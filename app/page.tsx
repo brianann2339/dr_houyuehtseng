@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { homeUrl, siteUrl } from "./site";
+import VisitorCounter from "./visitor-counter";
 
 const ArrowUpRight = () => (
   <span className="arrow" aria-hidden="true">
@@ -531,7 +532,10 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
+          <div className="footer-meta">
+            <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
+            <VisitorCounter />
+          </div>
         </div>
       </footer>
     </>
