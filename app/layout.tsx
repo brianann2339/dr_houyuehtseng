@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(homeUrl),
   title: "侯岳岑 Yueh-Tseng Hou｜急診醫師・臨床 AI 研究者",
   description:
-    "侯岳岑（Yueh-Tseng Hou, M.D.），急診醫師・臨床 AI 研究者。台北慈濟醫院急診部專任主治醫師、國立臺灣大學生醫電子與資訊學研究所博士候選人；與跨領域團隊一起把敗血症預測模型帶進急診的日常流程。",
+    "侯岳岑（Yueh-Tseng Hou, M.D.），急診醫師・臨床 AI 研究者。台北慈濟急診專任主治醫師、臺大生醫電資博士候選人。專注於臨床痛點與 AI 模型的精準轉譯，推動敗血症預測系統進入常態急診流程。",
   alternates: { canonical: homeUrl },
   robots: { index: true, follow: true },
   verification: { google: "z9Oqz_ZatY5FOe1Uk2-7pk9zyFW01yl94YoX3nyf8mA" },

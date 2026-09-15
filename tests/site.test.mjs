@@ -46,6 +46,10 @@ test("renders the finished personal website", async () => {
   const text = visibleText(html);
   assert.match(html, /<html lang="zh-Hant">/i);
   assert.match(html, /<title>侯岳岑 Yueh-Tseng Hou｜急診醫師・臨床 AI 研究者<\/title>/i);
+  assert.match(
+    html,
+    /<meta name="description" content="侯岳岑（Yueh-Tseng Hou, M\.D\.），急診醫師・臨床 AI 研究者。台北慈濟急診專任主治醫師、臺大生醫電資博士候選人。專注於臨床痛點與 AI 模型的精準轉譯，推動敗血症預測系統進入常態急診流程。"/,
+  );
   assert.match(html, new RegExp(`<link rel="canonical" href="${siteUrl}"`));
   assert.doesNotMatch(html, /noindex/i);
   const profileJson = html.match(
@@ -142,13 +146,17 @@ test("renders the finished personal website", async () => {
   );
   assert.match(
     text,
-    /2025\/04\/24 台北慈濟醫院 PGY專業訓練課程｜生成式AI在臨床與學習上的應用/,
+    /2025\/04\/24 台北慈濟醫院 PGY 專業訓練課程｜生成式 AI 在臨床與學習上的應用/,
   );
   assert.match(
     text,
     /2023\/10\/21 急診聯合學術研討會 受邀演講｜The role of Brosym® in the treatment of Pneumonia/,
   );
-  assert.doesNotMatch(text, /[「」]/);
+  assert.match(text, /同一套「\s*做得出、驗得了、且符合急診工作流\s*」的解決方案。/);
+  assert.match(
+    html,
+    /同一套「<strong>做得出、驗得了、且符合急診工作流<\/strong>」的解決方案。/,
+  );
   assert.match(
     text,
     /2025\/08\/06 .* 2025\/04\/24 .* 2024\/12\/09 .* 2023\/10\/21/,
@@ -191,6 +199,11 @@ test("renders the finished personal website", async () => {
   assert.match(text, /臨床 AI 與數位醫療產品：\s*需求定義、落地可行性評估、SaMD 臨床驗證設計/);
   assert.match(text, /📬 商務與學術合作/);
   assert.match(text, /☕ 醫學科普與生活交流/);
+  assert.match(text, /與我一起「逛街學醫學」。/);
+  assert.match(
+    html,
+    /<a href="https:\/\/www\.youtube\.com\/@hou_care_you" target="_blank" rel="noreferrer">YouTube<\/a>，與我一起「逛街學醫學」。/,
+  );
   assert.match(html, /portrait\.jpg/);
   assert.match(html, /href="\/research"/);
   assert.match(html, /<main[^>]*id="content"[^>]*tabindex="-1"/i);
