@@ -309,6 +309,21 @@ h1 {
   text-align: center;
 }
 
+.pull p > span {
+  display: block;
+}
+
+.pull p small {
+  color: var(--soft);
+  display: block;
+  font-family: "Noto Sans TC", "PingFang TC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+
 /* ---------- Sections ---------- */
 
 section {
@@ -527,6 +542,50 @@ section {
 }
 
 .contact-copy a {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1px;
+}
+
+.contact-topics {
+  color: var(--soft);
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 24px 0 0;
+  max-width: 760px;
+  padding: 0;
+}
+
+.contact-topics li {
+  padding-left: 18px;
+  position: relative;
+}
+
+.contact-topics li::before {
+  color: var(--moss-text);
+  content: "—";
+  left: 0;
+  position: absolute;
+}
+
+.contact-topics strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.contact-actions {
+  color: var(--soft);
+  display: grid;
+  gap: 8px;
+  margin: 26px 0 0;
+  max-width: 760px;
+}
+
+.contact-actions p {
+  margin: 0;
+}
+
+.contact-actions a {
   border-bottom: 1px solid var(--line);
   padding-bottom: 1px;
 }

@@ -165,19 +165,21 @@ const qualifications = [
 const projectFacets = [
   {
     num: "01",
-    title: "定義臨床問題",
-    detail: "提出研究與產品需求，設計敗血症風險分級、臨床警示與亮燈提示的情境。",
+    title: "臨床問題定義",
+    detail:
+      "提煉真實臨床盲點，規劃風險分級、警示閾值與無痛嵌入急診 HIS 的亮燈互動機制。",
   },
   {
     num: "02",
-    title: "連結臨床與技術",
+    title: "跨領域轉譯與驗證",
     detail:
-      "判讀資料的臨床脈絡與偽陽性、偽陰性案例，把模型的運作方式與限制，翻譯成醫療端聽得懂的語言。",
+      "判讀偽陽性與偽陰性案例的臨床成因，將模型黑盒限制翻譯為醫療人員能信任與理解的語言。",
   },
   {
     num: "03",
-    title: "推動落地與優化",
-    detail: "評估模型是否貼合臨床需求，與跨部門團隊共同推動系統與照護流程的改善。",
+    title: "系統落地與閉環優化",
+    detail:
+      "實際導入急診日常運作，追蹤臨床使用成效與工作流反饋，實現醫學研究、技術演進與照護品質的三贏。",
   },
 ];
 
@@ -284,7 +286,7 @@ export default function Home() {
             <p className="en-name">Yueh-Tseng Hou, M.D.</p>
             <p className="idline">急診醫師・臨床 AI 研究者</p>
             <p className="intro">
-              我是急診醫師，現為台北慈濟醫院急診部專任主治醫師，也是國立臺灣大學生醫電子與資訊學研究所的博士候選人。過去幾年，我和資料科學家、工程師及院內夥伴，一起把敗血症預測模型帶進急診的日常流程。我的角色，是把臨床問題、資料脈絡與技術限制說清楚，讓跨領域團隊更容易一起工作。
+              我是台北慈濟醫院急診部專任主治醫師，同時於國立臺灣大學生醫電資所攻讀博士。在分秒必爭的急診現場，我致力於推動醫療與人工智慧的深度結合。過去幾年，我與跨領域團隊將敗血症預測模型成功落地至常態臨床流程中。我的核心角色，是精準轉譯臨床痛點、資料脈絡與工程邊界，讓演算法不只是高分的模型，而是醫護團隊真正敢用、好用的臨床決策工具。
             </p>
             <div className="links">
               <a href={scholarUrl} target="_blank" rel="noreferrer">
@@ -331,18 +333,24 @@ export default function Home() {
         </div>
 
         <div className="pull">
-          <p>在急診與演算法之間，做翻譯的人。</p>
+          <p>
+            <span>在急診第一線與演算法之間，做引路與翻譯的人。</span>
+            <small>Bridging the gap between clinical reality and machine learning.</small>
+          </p>
         </div>
 
         <section id="about">
           <SectionTitle title="關於我" />
-          <p className="lede">我關心的不只是模型表現，也在意它能不能被臨床真正使用。</p>
+          <p className="lede">
+            我關心的不只是模型評估指標（Metrics），而是它能否真正挽救急診病人的生命。
+          </p>
           <div className="cols">
             <p>
-              臨床人員知道問題在哪裡，技術團隊知道系統能怎麼做。最難的部分，往往是把兩邊的知識變成同一個東西——一個做得出來、驗證得了，也真的貼近照護需求的工具。
+              臨床端理解病患與照護流程的痛點，技術端掌握數據與演算法的極限；而智慧醫療最關鍵的挑戰，是將兩端的認知盲區轉化為同一套
+              <strong>做得出、驗得了、且符合急診工作流</strong>的解決方案。
             </p>
             <p>
-              所以我的工作常常橫跨好幾層：問題定義、研究設計、資料的臨床脈絡判讀、模型結果的解釋，以及上線之後的流程協作。我喜歡把複雜的事講清楚，也在意一個團隊能不能長久、舒服地一起合作。
+              因此，我的研究與實作涵蓋了全流程：從臨床痛點的精準定義、研究與驗證架構設計、數據脈絡的醫學判讀，到模型可解釋性與上線後的跨部門流程整合。結合急診重症、離島緊急後送以及法學研習的跨域背景，我重視系統的安全性與合規性，也致力於在跨領域團隊中建立開放、互信且高效的共創文化。
             </p>
           </div>
         </section>
@@ -417,13 +425,10 @@ export default function Home() {
           <p className="proj-name">敗血症 AI 臨床決策支援系統</p>
           <p className="proj-with">台北慈濟醫院 × ASUS AICS</p>
           <p className="proj-lede">
-            這個專案從一個具體的臨床問題出發：如何辨識敗血症高風險病人，並把風險分級與警示整合進日常急診流程？
+            敗血症是急診高致死率的危急重症，黃金治療時間稍縱即逝。此專案核心在於：如何提早辨識隱匿性高風險患者，並在不干擾醫護搶救節奏的前提下，將警示無縫嵌入急診日常。
           </p>
           <p className="proj-role">
-            我提出臨床需求並擔任研究計畫主持人，先以初期成果與三年臨床資料建立改善依據，再和
-            ASUS AICS
-            的資料與工程團隊、急診主任、護理長、資訊部及院級主管，一起推動模型、HIS
-            與臨床流程的優化。模型與程式的實作由專業的工程與資料科學團隊完成；我的責任，是確保這套系統回答的是臨床真正的問題。
+            我作為臨床需求提出者與研究計畫主持人，整合三年急診臨床數據建立改善標竿，協同 ASUS AICS 資料團隊、院內資訊部、急診護理與主管團隊，推進模型建置與 HIS 整合。模型與演算法由專業工程團隊操刀；我的任務，是確保每一行演算法，都精準回應急診第一線的真實難題。
           </p>
           <div className="facets">
             {projectFacets.map((facet) => (
@@ -497,16 +502,42 @@ export default function Home() {
         <section id="contact">
           <SectionTitle title="聯絡" />
           <p className="contact-copy">
-            如果您在醫療 AI、醫療資訊、數位健康或醫藥產業，想聊聊研究、產品或跨域合作的可能，歡迎透過{" "}
-            <a href={linkedinUrl} target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>{" "}
-            與我聯繫；也歡迎到{" "}
-            <a href={threadsUrl} target="_blank" rel="noreferrer">
-              Threads
-            </a>{" "}
-            逛逛，我也在那裡把醫學知識寫得貼近日常。
+            無論您來自醫療科技產業、學術研究單位、醫療機構或創投團隊，若您正在尋找能深度對接臨床與技術的合作夥伴，非常歡迎來信交流：
           </p>
+          <ul className="contact-topics">
+            <li>
+              <strong>臨床 AI 與數位醫療產品：</strong>
+              需求定義、落地可行性評估、SaMD 臨床驗證設計
+            </li>
+            <li>
+              <strong>學術研究與跨國合作：</strong>
+              敗血症預測、急診重症預後、多模態醫學資料分析
+            </li>
+            <li>
+              <strong>專題演講與專業授課：</strong>
+              臨床人員 AI 素養培訓、智慧醫療落地實務分享
+            </li>
+          </ul>
+          <div className="contact-actions">
+            <p>
+              📬 商務與學術合作：歡迎透過{" "}
+              <a href={linkedinUrl} target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>{" "}
+              或來信 <a href="mailto:xde03012@tzuchi.com.tw">xde03012@tzuchi.com.tw</a> 洽詢。
+            </p>
+            <p>
+              ☕ 醫學科普與生活交流：也歡迎造訪我的{" "}
+              <a href={threadsUrl} target="_blank" rel="noreferrer">
+                Threads
+              </a>{" "}
+              與{" "}
+              <a href={youtubeUrl} target="_blank" rel="noreferrer">
+                YouTube
+              </a>
+              ，與我一起逛街學醫學。
+            </p>
+          </div>
           <address className="contact-details">
             <span>Taipei Tzu Chi Hospital</span>
             <span>Department of Emergency Medicine</span>

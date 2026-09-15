@@ -69,12 +69,21 @@ test("renders the finished personal website", async () => {
   assert.match(html, /<h1>侯岳岑<\/h1>/);
   assert.match(html, /Yueh-Tseng Hou, M\.D\./);
   assert.match(html, /敗血症 AI 臨床決策支援系統/);
-  assert.match(html, /在急診與演算法之間，做翻譯的人/);
+  assert.match(html, /在急診第一線與演算法之間，做引路與翻譯的人/);
+  assert.match(html, /Bridging the gap between clinical reality and machine learning\./);
+  assert.match(
+    text,
+    /我是台北慈濟醫院急診部專任主治醫師，同時於國立臺灣大學生醫電資所攻讀博士。.*讓演算法不只是高分的模型，而是醫護團隊真正敢用、好用的臨床決策工具。/,
+  );
   assert.match(html, /2017\/09—2018\/08/);
   assert.match(html, /台北慈濟醫院一般科/);
   assert.match(text, /研究經歷/);
   assert.match(text, /臨床經歷/);
   assert.match(text, /學歷與進修/);
+  assert.match(text, /我關心的不只是模型評估指標（Metrics），而是它能否真正挽救急診病人的生命。/);
+  assert.match(text, /做得出、驗得了、且符合急診工作流/);
+  assert.match(text, /模型可解釋性與上線後的跨部門流程整合/);
+  assert.match(text, /開放、互信且高效的共創文化/);
   assert.match(text, /研究經歷 .* 臨床經歷 .* 學歷與進修/);
   assert.match(
     text,
@@ -120,7 +129,7 @@ test("renders the finished personal website", async () => {
   assert.doesNotMatch(text, /臨床與研究/);
   assert.doesNotMatch(text, /急救科/);
   assert.match(text, /台北慈濟醫院急診部 專任主治醫師/);
-  assert.match(text, /現為台北慈濟醫院急診部專任主治醫師/);
+  assert.match(text, /我是台北慈濟醫院急診部專任主治醫師/);
   assert.match(text, /2022\/03—2024\/12 三軍總醫院澎湖分院/);
   assert.match(text, /2025 通過一般科醫學師資培訓（PGY 指導醫師資格）/);
   assert.match(text, /2025 從事勞工健康服務醫師資格（健檢醫\/廠醫執照）/);
@@ -157,6 +166,17 @@ test("renders the finished personal website", async () => {
     text,
     /2020 Machine Learning Application in Emergency Trauma Patients Prognosis Prediction: Optimization with a Genetic Algorithm and Discretization 住院醫師研究論文發表競賽－海報演講組優勝/,
   );
+  assert.match(
+    text,
+    /敗血症是急診高致死率的危急重症，黃金治療時間稍縱即逝。此專案核心在於：如何提早辨識隱匿性高風險患者/,
+  );
+  assert.match(
+    text,
+    /我作為臨床需求提出者與研究計畫主持人，整合三年急診臨床數據建立改善標竿，協同 ASUS AICS 資料團隊、院內資訊部、急診護理與主管團隊，推進模型建置與 HIS 整合。/,
+  );
+  assert.match(text, /臨床問題定義/);
+  assert.match(text, /跨領域轉譯與驗證/);
+  assert.match(text, /系統落地與閉環優化/);
   assert.equal(
     (
       text.match(
@@ -167,7 +187,10 @@ test("renders the finished personal website", async () => {
   );
   assert.doesNotMatch(html, /讓醫療 AI，/);
   assert.match(html, /Google Scholar/);
-  assert.match(html, /與我聯繫/);
+  assert.match(text, /非常歡迎來信交流/);
+  assert.match(text, /臨床 AI 與數位醫療產品：\s*需求定義、落地可行性評估、SaMD 臨床驗證設計/);
+  assert.match(text, /📬 商務與學術合作/);
+  assert.match(text, /☕ 醫學科普與生活交流/);
   assert.match(html, /portrait\.jpg/);
   assert.match(html, /href="\/research"/);
   assert.match(html, /<main[^>]*id="content"[^>]*tabindex="-1"/i);
@@ -177,9 +200,9 @@ test("renders the finished personal website", async () => {
   );
   assert.equal(
     (html.match(/href="https:\/\/www\.youtube\.com\/@hou_care_you"/g) ?? []).length,
-    4,
+    5,
   );
-  assert.equal((text.match(/Threads 與 YouTube/g) ?? []).length, 2);
+  assert.equal((text.match(/Threads 與 YouTube/g) ?? []).length, 3);
   assert.match(
     text,
     /平常也在 Threads 與 YouTube 經營逛街學醫學——把醫學知識寫得貼近日常。/,
@@ -188,7 +211,7 @@ test("renders the finished personal website", async () => {
     html,
     /<a href="https:\/\/www\.youtube\.com\/@hou_care_you" target="_blank" rel="noreferrer">YouTube<\/a>｜逛街學醫學——把醫學知識寫得貼近日常。/,
   );
-  assert.equal((text.match(/把醫學知識寫得貼近日常/g) ?? []).length, 3);
+  assert.equal((text.match(/把醫學知識寫得貼近日常/g) ?? []).length, 2);
   assert.doesNotMatch(text, /寫給一般讀者的醫學筆記/);
   assert.match(
     text,
@@ -220,6 +243,8 @@ test("keeps the footer fixed without covering page content", async () => {
   assert.match(css, /--footer-reserve:\s*calc\(106px \+ env\(safe-area-inset-bottom\)\)/);
   assert.match(css, /\.footer-meta\s*{[^}]*display:\s*flex;/s);
   assert.match(css, /\.visitor-count\s*{[^}]*white-space:\s*nowrap;/s);
+  assert.match(css, /\.contact-topics\s*{[^}]*display:\s*grid;/s);
+  assert.match(css, /\.contact-actions\s*{[^}]*display:\s*grid;/s);
   assert.doesNotMatch(css, /content:\s*"[「」]"/);
 });
 
