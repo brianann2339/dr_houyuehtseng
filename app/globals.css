@@ -96,6 +96,8 @@ header {
 .header-in {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
   justify-content: space-between;
   padding-bottom: 22px;
   padding-top: 22px;
@@ -534,6 +536,99 @@ section {
   padding-bottom: 2px;
 }
 
+.feedback-intro {
+  color: var(--soft);
+  margin: 0 0 28px;
+  max-width: 720px;
+}
+
+.feedback-grid {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.feedback-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--moss);
+  min-width: 0;
+  padding: 28px;
+}
+
+.feedback-card h3 {
+  color: var(--orange-text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 18px;
+}
+
+.feedback-card blockquote {
+  font-family: "LXGW WenKai TC", "Kaiti TC", serif;
+  font-size: 24px;
+  line-height: 1.8;
+  margin: 0 0 24px;
+}
+
+.feedback-meta {
+  color: var(--soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 4px 18px;
+  justify-content: space-between;
+}
+
+.feedback-details {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 16px;
+}
+
+.feedback-details summary {
+  color: var(--moss-text);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.feedback-details summary:hover {
+  color: var(--orange-text);
+}
+
+.feedback-details summary:focus-visible {
+  outline: 3px solid var(--orange-text);
+  outline-offset: 4px;
+}
+
+.feedback-sources {
+  display: grid;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.feedback-sources figure {
+  margin: 0;
+}
+
+.feedback-sources a {
+  display: block;
+}
+
+.feedback-sources img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.feedback-sources figcaption {
+  color: var(--soft);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
 .contact-copy {
   color: var(--soft);
   font-size: 16.5px;
@@ -872,6 +967,10 @@ footer {
   :root {
     --footer-reserve: 120px;
   }
+
+  section {
+    scroll-margin-top: 160px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -974,6 +1073,14 @@ footer {
   .cols {
     gap: 20px;
     grid-template-columns: 1fr;
+  }
+
+  .feedback-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-card {
+    padding: 24px 20px;
   }
 
   .research-hero {

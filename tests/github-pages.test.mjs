@@ -161,6 +161,23 @@ test("exports GitHub Pages crawl metadata", async () => {
   );
 });
 
+test("exports original feedback images with GitHub Pages paths", async () => {
+  const home = await artifact("index.html");
+  const images = [...home.matchAll(/<img\b[^>]*src="([^"]*\/feedback\/[^"]+)"/g)];
+  assert.equal(images.length, 3);
+
+  for (const [, src] of images) {
+    assert.ok(src.startsWith(`${basePath}/feedback/`));
+    assert.ok(home.includes(`href="${src}"`));
+    const pathname = src.slice(basePath.length);
+    const [source, exported] = await Promise.all([
+      readFile(new URL(`../public${pathname}`, import.meta.url)),
+      readFile(new URL(`../pages-dist${pathname}`, import.meta.url)),
+    ]);
+    assert.deepEqual(exported, source);
+  }
+});
+
 test("counts at most once per local day and hides invalid responses", async () => {
   const home = await artifact("index.html");
   const script = visitorCounterScript(home);

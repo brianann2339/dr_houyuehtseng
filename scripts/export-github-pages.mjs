@@ -96,6 +96,7 @@ await Promise.all([
   writeFile(join(outputDir, "sitemap.xml"), sitemap),
   writeFile(join(outputDir, ".nojekyll"), ""),
   cp(join(clientDir, "portrait.jpg"), join(outputDir, "portrait.jpg")),
+  cp(join(clientDir, "feedback"), join(outputDir, "feedback"), { recursive: true }),
 ]);
 
 const cssDir = join(clientDir, "_next", "static", "css");

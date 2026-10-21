@@ -147,6 +147,7 @@ const education = [
 ];
 
 const qualifications = [
+  { period: "", title: "中華賽車會｜賽車醫官" },
   {
     period: "2025",
     title: "通過一般科醫學師資培訓（PGY 指導醫師資格）",
@@ -244,6 +245,49 @@ const talks = [
   },
 ];
 
+const feedbackEntries = [
+  {
+    title: "醫療專業，也有人情的溫度",
+    quote:
+      "兩位認真的付出，讓我們深深感受到醫療不只有專業，更有人情的溫度。",
+    author: "蔣○○",
+    role: "家屬回饋",
+    date: "2026-10-10",
+    sources: [
+      {
+        label: "感謝信照片",
+        src: "/feedback/2026-10-10-letter.png",
+        alt: "蔣○○家屬致台北慈濟急診團隊的感謝信照片，分享細心評估與溫柔照護帶來的溫暖。",
+        width: 1477,
+        height: 1108,
+      },
+      {
+        label: "文字版本",
+        src: "/feedback/2026-10-10-text.png",
+        alt: "蔣○○家屬回饋的文字截圖，感謝侯岳岑醫師與護理師的照護，落款民國 115 年 10 月 10 日。",
+        width: 1468,
+        height: 1222,
+      },
+    ],
+  },
+  {
+    title: "急診現場的熱誠與耐心",
+    quote: "侯醫師能維持看病的熱誠與耐心真的很不容易。",
+    author: "林○○",
+    role: "家屬回饋",
+    date: "2024-08-29",
+    sources: [
+      {
+        label: "文字版本",
+        src: "/feedback/2024-08-29-text.png",
+        alt: "林○○家屬回饋的文字截圖，感謝侯岳岑醫師與護理人員耐心處理母親傷口，落款民國 113 年 8 月 29 日。",
+        width: 1494,
+        height: 648,
+      },
+    ],
+  },
+];
+
 const SectionTitle = ({ title }: { title: string }) => (
   <div className="sec-title">
     <h2>{title}</h2>
@@ -273,6 +317,7 @@ export default function Home() {
             <a href="#experience">經歷</a>
             <a href="#project">代表專案</a>
             <Link href="/research">研究成果</Link>
+            <a href="#feedback">感謝與回饋</a>
             <a href="#contact">聯絡</a>
           </nav>
         </div>
@@ -496,6 +541,50 @@ export default function Home() {
               YouTube
             </a>{"｜逛街學醫學——把醫學知識寫得貼近日常。"}
           </p>
+        </section>
+
+        <section id="feedback">
+          <SectionTitle title="感謝與回饋" />
+          <p className="feedback-intro">
+            來自病人與家屬的文字，提醒我在忙碌的急診日常中，持續珍惜每一次信任與託付。
+          </p>
+          <div className="feedback-grid">
+            {feedbackEntries.map((entry) => (
+              <article className="feedback-card" key={`${entry.date}-${entry.author}`}>
+                <h3>{entry.title}</h3>
+                <blockquote>{entry.quote}</blockquote>
+                <div className="feedback-meta">
+                  <span>{entry.author} · {entry.role}</span>
+                  <time dateTime={entry.date}>{entry.date.replaceAll("-", ".")}</time>
+                </div>
+                <details className="feedback-details">
+                  <summary>閱讀原始回饋</summary>
+                  <div className="feedback-sources">
+                    {entry.sources.map((source) => (
+                      <figure key={source.src}>
+                        <a
+                          href={source.src}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${source.label}（開啟原尺寸）`}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element -- 靜態匯出保留完整原圖，無 next/image 最佳化服務 */}
+                          <img
+                            src={source.src}
+                            alt={source.alt}
+                            width={source.width}
+                            height={source.height}
+                            loading="lazy"
+                          />
+                        </a>
+                        <figcaption>{source.label} · 點圖查看原尺寸</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </details>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section id="contact">
