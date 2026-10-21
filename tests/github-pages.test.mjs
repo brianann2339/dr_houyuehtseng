@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 import vm from "node:vm";
 
@@ -118,7 +118,18 @@ test("exports a static GitHub Pages artifact", async () => {
   );
   assert.match(home, new RegExp(`href="${basePath}/research/"`));
   assert.match(home, new RegExp(`src="${basePath}/portrait\\.jpg"`));
-  assert.match(home, new RegExp(`href="${basePath}/assets/site\\.css"`));
+  const cssDir = new URL("../dist/client/_next/static/css/", import.meta.url);
+  const cssFiles = (await readdir(cssDir)).filter((file) => file.endsWith(".css"));
+  assert.equal(cssFiles.length, 1);
+  const stylesheet = `${basePath}/assets/site.css?v=${encodeURIComponent(cssFiles[0])}`;
+  for (const html of [home, research]) {
+    assert.ok(html.includes(`href="${stylesheet}"`));
+  }
+  const [builtCss, exportedCss] = await Promise.all([
+    readFile(new URL(cssFiles[0], cssDir)),
+    readFile(new URL("../pages-dist/assets/site.css", import.meta.url)),
+  ]);
+  assert.deepEqual(exportedCss, builtCss);
   assert.match(research, new RegExp(`href="${basePath}/#experience"`));
   assert.doesNotMatch(`${home}${research}`, /rel="modulepreload"/i);
   const staticPages = `${home}${research}`;

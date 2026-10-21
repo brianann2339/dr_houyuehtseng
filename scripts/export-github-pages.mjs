@@ -6,6 +6,12 @@ import { siteBasePath } from "../app/site.ts";
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const outputDir = join(projectRoot, "pages-dist");
 const clientDir = join(projectRoot, "dist", "client");
+const cssDir = join(clientDir, "_next", "static", "css");
+const cssFiles = (await readdir(cssDir)).filter((file) => file.endsWith(".css"));
+
+if (cssFiles.length !== 1) {
+  throw new Error(`Expected one stylesheet, found ${cssFiles.length}`);
+}
 
 const workerUrl = pathToFileURL(join(projectRoot, "dist", "server", "index.js"));
 workerUrl.searchParams.set("export", Date.now().toString());
@@ -74,7 +80,7 @@ function toStaticHtml(html) {
         `href=(["'])${siteBasePath}/_next/static/css/[^"']+\\1`,
         "i",
       ),
-      `href="${siteBasePath}/assets/site.css"`,
+      `href="${siteBasePath}/assets/site.css?v=${encodeURIComponent(cssFiles[0])}"`,
     );
 }
 
@@ -98,12 +104,5 @@ await Promise.all([
   cp(join(clientDir, "portrait.jpg"), join(outputDir, "portrait.jpg")),
   cp(join(clientDir, "feedback"), join(outputDir, "feedback"), { recursive: true }),
 ]);
-
-const cssDir = join(clientDir, "_next", "static", "css");
-const cssFiles = (await readdir(cssDir)).filter((file) => file.endsWith(".css"));
-
-if (cssFiles.length !== 1) {
-  throw new Error(`Expected one stylesheet, found ${cssFiles.length}`);
-}
 
 await cp(join(cssDir, cssFiles[0]), join(outputDir, "assets", "site.css"));
