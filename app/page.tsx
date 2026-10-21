@@ -155,7 +155,7 @@ const qualifications = [
     period: "2025",
     title: "從事勞工健康服務醫師資格（健檢醫/廠醫執照）",
   },
-  { period: "2022", title: "中華賽車會｜賽車醫官" },
+  { period: "2022", title: "中華賽車會｜賽車醫官證照" },
   {
     period: "2022",
     title: "衛福部急診醫學科專科甄審合格（急診專科執照）",
