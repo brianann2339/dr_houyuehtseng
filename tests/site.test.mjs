@@ -5,6 +5,10 @@ import test from "node:test";
 const siteRoot = "https://brianann2339.github.io/dr_houyuehtseng";
 const siteUrl = `${siteRoot}/`;
 const researchUrl = `${siteRoot}/research/`;
+const englishUrl = `${siteRoot}/en/`;
+const englishResearchUrl = `${siteRoot}/en/research/`;
+const japaneseUrl = `${siteRoot}/ja/`;
+const japaneseResearchUrl = `${siteRoot}/ja/research/`;
 
 async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -137,6 +141,7 @@ test("renders the finished personal website", async () => {
   assert.match(text, /2022\/03—2024\/12 三軍總醫院澎湖分院/);
   assert.match(text, /2025 通過一般科醫學師資培訓（PGY 指導醫師資格）/);
   assert.match(text, /2025 從事勞工健康服務醫師資格（健檢醫\/廠醫執照）/);
+  assert.match(text, /2022 中華賽車會｜賽車醫官證照/);
   assert.match(text, /2022 衛福部急診醫學科專科甄審合格（急診專科執照）/);
   assert.match(text, /2017 考試院醫師高考考試及格（醫師執照）/);
   assert.doesNotMatch(text, /2022\/03 起|2025 起|PGY 指導教師資格/);
@@ -241,6 +246,80 @@ test("renders the finished personal website", async () => {
   assert.match(html, /yueh_tseng_hou_visit_day_v1/);
   assert.match(html, /shouldIncrement \? "\/up" : ""/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/i);
+});
+
+test("renders complete English and Japanese routes", async () => {
+  const [englishHomeResponse, englishResearchResponse, japaneseHomeResponse, japaneseResearchResponse] =
+    await Promise.all([
+      render("/en"),
+      render("/en/research"),
+      render("/ja"),
+      render("/ja/research"),
+    ]);
+
+  for (const response of [
+    englishHomeResponse,
+    englishResearchResponse,
+    japaneseHomeResponse,
+    japaneseResearchResponse,
+  ]) {
+    assert.equal(response.status, 200);
+  }
+
+  const [englishHome, englishResearch, japaneseHome, japaneseResearch] =
+    await Promise.all([
+      englishHomeResponse.text(),
+      englishResearchResponse.text(),
+      japaneseHomeResponse.text(),
+      japaneseResearchResponse.text(),
+    ]);
+
+  assert.match(
+    englishHome,
+    /<title>Yueh-Tseng Hou, M\.D\. \| Emergency Physician &amp; Clinical AI Researcher<\/title>/,
+  );
+  assert.match(englishHome, new RegExp(`<link rel="canonical" href="${englishUrl}"`));
+  assert.match(visibleText(englishHome), /Guiding and translating between frontline emergency care and algorithms\./);
+  assert.match(visibleText(englishHome), /Research Experience/);
+  assert.match(visibleText(englishHome), /Race Medical Officer Certificate/);
+  assert.match(englishHome, /href="\/en\/research"/);
+  assert.match(englishHome, /aria-label="Switch language"/);
+  assert.match(englishHome, /👣 Total visits:/);
+
+  assert.match(japaneseHome, /<title>侯岳岑（Yueh-Tseng Hou）｜救急医・臨床AI研究者<\/title>/);
+  assert.match(japaneseHome, new RegExp(`<link rel="canonical" href="${japaneseUrl}"`));
+  assert.match(visibleText(japaneseHome), /救急医療の最前線とアルゴリズムの間をつなぎ、導く翻訳者。/);
+  assert.match(visibleText(japaneseHome), /研究経歴/);
+  assert.match(visibleText(japaneseHome), /レース医務官認定/);
+  assert.match(japaneseHome, /href="\/ja\/research"/);
+  assert.match(japaneseHome, /aria-label="言語を切り替える"/);
+  assert.match(japaneseHome, /👣 累計訪問数：/);
+
+  assert.match(englishResearch, /<title>Research \| Yueh-Tseng Hou, M\.D\.<\/title>/);
+  assert.match(
+    englishResearch,
+    new RegExp(`<link rel="canonical" href="${englishResearchUrl}"`),
+  );
+  assert.match(visibleText(englishResearch), /26 publications/);
+  assert.match(visibleText(englishResearch), /Conference Presentations/);
+  assert.match(visibleText(englishResearch), /Website translation · Original title:/);
+  assert.equal((englishResearch.match(/class="publication-item"/g) ?? []).length, 26);
+
+  assert.match(japaneseResearch, /<title>研究業績｜侯岳岑（Yueh-Tseng Hou）<\/title>/);
+  assert.match(
+    japaneseResearch,
+    new RegExp(`<link rel="canonical" href="${japaneseResearchUrl}"`),
+  );
+  assert.match(visibleText(japaneseResearch), /論文 26編/);
+  assert.match(visibleText(japaneseResearch), /年度別研究計画/);
+  assert.match(visibleText(japaneseResearch), /ウェブサイト訳 · 原題：/);
+  assert.equal((japaneseResearch.match(/class="publication-item"/g) ?? []).length, 26);
+
+  for (const html of [englishHome, englishResearch, japaneseHome, japaneseResearch]) {
+    assert.match(html, /hrefLang="zh-Hant"/);
+    assert.match(html, /hrefLang="en"/);
+    assert.match(html, /hrefLang="ja"/);
+  }
 });
 
 test("keeps the footer fixed without covering page content", async () => {
@@ -482,7 +561,14 @@ test("exposes crawl rules and the public sitemap", async () => {
   const sitemap = await sitemapResponse.text();
   assert.deepEqual(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
-    [siteUrl, researchUrl],
+    [
+      siteUrl,
+      researchUrl,
+      englishUrl,
+      englishResearchUrl,
+      japaneseUrl,
+      japaneseResearchUrl,
+    ],
   );
 });
 

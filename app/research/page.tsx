@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { researchUrl } from "../site";
+import {
+  LanguageSwitcher,
+  languageAlternates,
+  type Locale,
+  pagePath,
+  pageUrl,
+} from "../i18n";
+import {
+  localizeResearchData,
+  researchCount,
+  researchText,
+} from "../research-copy";
 import VisitorCounter from "../visitor-counter";
 
 const scholarUrl =
@@ -582,51 +593,64 @@ export const metadata: Metadata = {
   title: "研究成果｜侯岳岑 Yueh-Tseng Hou",
   description:
     "侯岳岑的論文發表、學術會議發表與歷年研究計畫，涵蓋急診醫學、敗血症決策支援、外傷預後、休克指數與醫學影像 AI。",
-  alternates: { canonical: researchUrl },
+  alternates: {
+    canonical: pageUrl("zh", "research"),
+    languages: languageAlternates("research"),
+  },
   robots: { index: true, follow: true },
 };
 
-export default function Research() {
+export function ResearchPage({ locale = "zh" }: { locale?: Locale }) {
+  const t = (text: string) => researchText(locale, text);
+  const localizedOtherWorks = localizeResearchData(locale, otherWorks);
+  const localizedConferencePresentations = localizeResearchData(
+    locale,
+    conferencePresentations,
+  );
+  const localizedResearchProjects = localizeResearchData(locale, researchProjects);
+
   return (
     <>
       <a className="skip-link" href="#research-content">
-        跳至主要內容
+        {t("跳至主要內容")}
       </a>
       <header>
         <div className="wrap header-in">
-          <Link className="mark" href="/" aria-label="回到首頁">
-            侯岳岑醫師<small>YUEH-TSENG HOU</small>
+          <Link className="mark" href={pagePath(locale, "home")} aria-label={t("回到首頁")}>
+            {t("侯岳岑醫師")}<small>YUEH-TSENG HOU</small>
           </Link>
-          <nav aria-label="主要導覽">
-            <Link href="/">首頁</Link>
-            <Link href="/#experience">經歷</Link>
-            <Link href="/#project">代表專案</Link>
-            <Link href="/research" aria-current="page">
-              研究成果
-            </Link>
-            <Link href="/#contact">聯絡</Link>
-          </nav>
+          <div className="header-actions">
+            <nav className="main-nav" aria-label={t("主要導覽")}>
+              <Link href={pagePath(locale, "home")}>{t("首頁")}</Link>
+              <Link href={`${pagePath(locale, "home")}#experience`}>{t("經歷")}</Link>
+              <Link href={`${pagePath(locale, "home")}#project`}>{t("代表專案")}</Link>
+              <Link href={pagePath(locale, "research")} aria-current="page">
+                {t("研究成果")}
+              </Link>
+              <Link href={`${pagePath(locale, "home")}#contact`}>{t("聯絡")}</Link>
+            </nav>
+            <LanguageSwitcher locale={locale} page="research" />
+          </div>
         </div>
       </header>
 
       <main className="wrap research-page" id="research-content" tabIndex={-1}>
         <div className="research-hero" id="top">
           <p className="kicker">PUBLICATIONS・PRESENTATIONS・PROJECTS</p>
-          <h1>研究成果</h1>
+          <h1>{t("研究成果")}</h1>
           <p className="research-intro">
-            研究從急診現場的問題出發，涵蓋敗血症決策支援、外傷與急診預後、休克指數，以及醫學影像
-            AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單、台灣急診醫學通訊著作、學術會議發表，以及可由公開來源確認的歷年研究計畫。
+            {t("研究從急診現場的問題出發，涵蓋敗血症決策支援、外傷與急診預後、休克指數，以及醫學影像 AI。這裡收錄依正式期刊、PubMed 與 DOI metadata 核對的論文清單、台灣急診醫學通訊著作、學術會議發表，以及可由公開來源確認的歷年研究計畫。")}
           </p>
-          <div className="research-overview" aria-label="研究成果摘要">
-            <span>{publications.length} 篇論文</span>
-            <span>{conferencePresentations.length} 項會議發表</span>
-            <span>{researchProjects.length} 筆年度計畫紀錄</span>
+          <div className="research-overview" aria-label={t("研究成果摘要")}>
+            <span>{researchCount(locale, "publications", publications.length)}</span>
+            <span>{researchCount(locale, "conferences", conferencePresentations.length)}</span>
+            <span>{researchCount(locale, "projects", researchProjects.length)}</span>
           </div>
-          <nav className="research-subnav" aria-label="研究成果頁內導覽">
-            <a href="#publications">論文發表</a>
-            <a href="#other-works">其他著作</a>
-            <a href="#conference-presentations">學術會議發表</a>
-            <a href="#projects">歷年研究計畫</a>
+          <nav className="research-subnav" aria-label={t("研究成果頁內導覽")}>
+            <a href="#publications">{t("論文發表")}</a>
+            <a href="#other-works">{t("其他著作")}</a>
+            <a href="#conference-presentations">{t("學術會議發表")}</a>
+            <a href="#projects">{t("歷年研究計畫")}</a>
           </nav>
           <div className="links">
             <a href={scholarUrl} target="_blank" rel="noreferrer">
@@ -640,12 +664,12 @@ export default function Research() {
 
         <section className="research-section" id="publications">
           <div className="sec-title">
-            <h2>論文發表</h2>
+            <h2>{t("論文發表")}</h2>
             <i aria-hidden="true"></i>
           </div>
           <p className="research-note">
-            清單最後整理於 2026/08，依出版年份排列；引用次數會持續變動，因此不固定顯示於網站。
-            <span className="publication-legend">† 侯岳岑為共同第一作者</span>
+            {t("清單最後整理於 2026/08，依出版年份排列；引用次數會持續變動，因此不固定顯示於網站。")}
+            <span className="publication-legend">{t("† 侯岳岑為共同第一作者")}</span>
           </p>
           <div className="publication-groups">
             {publicationYears.map((year) => (
@@ -670,7 +694,7 @@ export default function Research() {
                                   {publication.coFirst ? (
                                     <sup
                                       className="co-first-citation"
-                                      aria-label="共同第一作者"
+                                      aria-label={t("共同第一作者")}
                                     >
                                       †
                                     </sup>
@@ -703,14 +727,14 @@ export default function Research() {
 
         <section className="research-section" id="other-works">
           <div className="sec-title">
-            <h2>其他著作</h2>
+            <h2>{t("其他著作")}</h2>
             <i aria-hidden="true"></i>
           </div>
           <p className="research-note">
-            收錄台灣急診醫學通訊刊登之文章。
+            {t("收錄台灣急診醫學通訊刊登之文章。")}
           </p>
           <div className="other-work-list">
-            {otherWorks.map((work) => (
+            {localizedOtherWorks.map((work, index) => (
               <article className="other-work-item" key={work.title}>
                 <span className="other-work-year">{work.year}</span>
                 <div>
@@ -719,6 +743,12 @@ export default function Research() {
                       {work.title}
                     </a>
                   </h3>
+                  {locale !== "zh" && work.title !== otherWorks[index].title ? (
+                    <p className="translation-original">
+                      <span>{t("網站翻譯")} · {t("原題")}{locale === "en" ? ": " : "："}</span>
+                      <span lang="zh-Hant">{otherWorks[index].title}</span>
+                    </p>
+                  ) : null}
                   <p className="other-work-authors">
                     {work.authors.map((author, index) => (
                       <span key={author}>
@@ -736,14 +766,17 @@ export default function Research() {
 
         <section className="research-section" id="conference-presentations">
           <div className="sec-title">
-            <h2>學術會議發表</h2>
+            <h2>{t("學術會議發表")}</h2>
             <i aria-hidden="true"></i>
           </div>
           <p className="research-note">
-            收錄台灣急診醫學會之口頭、海報與病例報告發表；各筆附官方名單。
+            {t("收錄台灣急診醫學會之口頭、海報與病例報告發表；各筆附官方名單。")}
+            {locale !== "zh" ? (
+              <span className="publication-legend">{t("會議譯名說明")}</span>
+            ) : null}
           </p>
           <div className="conference-list">
-            {conferencePresentations.map((presentation) => (
+            {localizedConferencePresentations.map((presentation, index) => (
               <article
                 className="conference-item"
                 key={`${presentation.year}-${presentation.title}`}
@@ -751,6 +784,12 @@ export default function Research() {
                 <span className="conference-year">{presentation.year}</span>
                 <div>
                   <h3>{presentation.title}</h3>
+                  {locale !== "zh" && presentation.title !== conferencePresentations[index].title ? (
+                    <p className="translation-original">
+                      <span>{t("網站翻譯")} · {t("原題")}{locale === "en" ? ": " : "："}</span>
+                      <span lang="zh-Hant">{conferencePresentations[index].title}</span>
+                    </p>
+                  ) : null}
                   <p>{presentation.detail}</p>
                   <p className="conference-links">
                     {presentation.links.map((link, index) => (
@@ -770,18 +809,27 @@ export default function Research() {
 
         <section className="research-section" id="projects">
           <div className="sec-title">
-            <h2>歷年研究計畫</h2>
+            <h2>{t("歷年研究計畫")}</h2>
             <i aria-hidden="true"></i>
           </div>
           <p className="research-note">
-            依年度列出公開可確認的院內研究計畫；多年期計畫保留各年度紀錄。
+            {t("依年度列出公開可確認的院內研究計畫；多年期計畫保留各年度紀錄。")}
+            {locale !== "zh" ? (
+              <span className="publication-legend">{t("計畫譯名說明")}</span>
+            ) : null}
           </p>
           <div className="plan-list">
-            {researchProjects.map((project) => (
+            {localizedResearchProjects.map((project, index) => (
               <article className="plan-item" key={`${project.year}-${project.detail}`}>
                 <span className="plan-year">{project.year}</span>
                 <div>
                   <h3>{project.title}</h3>
+                  {locale !== "zh" && project.title !== researchProjects[index].title ? (
+                    <p className="translation-original">
+                      <span>{t("網站翻譯")} · {t("原題")}{locale === "en" ? ": " : "："}</span>
+                      <span lang="zh-Hant">{researchProjects[index].title}</span>
+                    </p>
+                  ) : null}
                   <p>{project.detail}</p>
                 </div>
               </article>
@@ -792,7 +840,7 @@ export default function Research() {
 
       <footer>
         <div className="wrap footer-in">
-          <span>侯岳岑 Yueh-Tseng Hou</span>
+          <span>{locale === "en" ? "Yueh-Tseng Hou" : "侯岳岑 Yueh-Tseng Hou"}</span>
           <div className="footer-links">
             {footerLinks.map((link) => (
               <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
@@ -802,10 +850,14 @@ export default function Research() {
           </div>
           <div className="footer-meta">
             <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
-            <VisitorCounter />
+            <VisitorCounter locale={locale} />
           </div>
         </div>
       </footer>
     </>
   );
+}
+
+export default function Research() {
+  return <ResearchPage />;
 }

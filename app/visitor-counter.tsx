@@ -1,3 +1,5 @@
+import type { Locale } from "./i18n";
+
 const visitorCounterUrl =
   "https://api.counterapi.dev/v2/yueh-tseng-hou/yueh-tseng-hou-visits";
 
@@ -61,7 +63,7 @@ const visitorCounterScript = `
         return;
       }
 
-      counter.textContent = value.toLocaleString("zh-TW");
+      counter.textContent = value.toLocaleString(wrapper.dataset.numberLocale || "zh-TW");
     })
     .catch(function () {
       releaseReservation();
@@ -70,11 +72,24 @@ const visitorCounterScript = `
 })();
 `;
 
-export default function VisitorCounter() {
+const counterCopy: Record<Locale, { prefix: string; suffix: string; numberLocale: string }> = {
+  zh: { prefix: "👣 累計來訪 ", suffix: " 人次", numberLocale: "zh-TW" },
+  en: { prefix: "👣 Total visits: ", suffix: "", numberLocale: "en-US" },
+  ja: { prefix: "👣 累計訪問数：", suffix: "", numberLocale: "ja-JP" },
+};
+
+export default function VisitorCounter({ locale = "zh" }: { locale?: Locale }) {
+  const copy = counterCopy[locale];
+
   return (
     <>
-      <span className="visitor-count" id="visitor-count" aria-live="polite">
-        👣 累計來訪 <strong id="visitor-count-number">…</strong> 人次
+      <span
+        className="visitor-count"
+        id="visitor-count"
+        aria-live="polite"
+        data-number-locale={copy.numberLocale}
+      >
+        {copy.prefix}<strong id="visitor-count-number">…</strong>{copy.suffix}
       </span>
       <script
         data-static-script="visitor-counter"

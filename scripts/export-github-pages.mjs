@@ -49,14 +49,21 @@ function prefixRootPath(attribute, quote, value) {
     return `${attribute}=${quote}${value}${quote}`;
   }
 
-  if (attribute.toLowerCase() === "href" && value === "/research") {
-    return `${attribute}=${quote}${siteBasePath}/research/${quote}`;
-  }
+  const [pathname, fragment] = value.split("#", 2);
+  const directoryRoutes = new Set([
+    "/research",
+    "/en",
+    "/en/research",
+    "/ja",
+    "/ja/research",
+  ]);
+  const normalizedPath = directoryRoutes.has(pathname) ? `${pathname}/` : pathname;
+  const normalizedValue = fragment === undefined ? normalizedPath : `${normalizedPath}#${fragment}`;
 
-  return `${attribute}=${quote}${siteBasePath}${value}${quote}`;
+  return `${attribute}=${quote}${siteBasePath}${normalizedValue}${quote}`;
 }
 
-function toStaticHtml(html) {
+function toStaticHtml(html, lang) {
   const withoutRuntime = html
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (script) =>
       /type=["']application\/ld\+json["']|data-static-script=["']visitor-counter["']/i.test(
@@ -72,6 +79,7 @@ function toStaticHtml(html) {
     .replace(/\sdata-precedence=["'][^"']*["']/gi, "");
 
   return withoutRuntime
+    .replace(/<html\s+lang=(['"])[^'"]*\1/i, `<html lang="${lang}"`)
     .replace(/\b(href|src)=(["'])([^"']*)\2/gi, (_, attribute, quote, value) =>
       prefixRootPath(attribute, quote, value),
     )
@@ -85,19 +93,38 @@ function toStaticHtml(html) {
 }
 
 await rm(outputDir, { recursive: true, force: true });
-await mkdir(join(outputDir, "research"), { recursive: true });
 await mkdir(join(outputDir, "assets"), { recursive: true });
 
-const [homeHtml, researchHtml, robots, sitemap] = await Promise.all([
-  render("/", "text/html"),
-  render("/research", "text/html"),
+const pages = [
+  { pathname: "/", output: "index.html", lang: "zh-Hant" },
+  { pathname: "/research", output: "research/index.html", lang: "zh-Hant" },
+  { pathname: "/en", output: "en/index.html", lang: "en" },
+  { pathname: "/en/research", output: "en/research/index.html", lang: "en" },
+  { pathname: "/ja", output: "ja/index.html", lang: "ja" },
+  { pathname: "/ja/research", output: "ja/research/index.html", lang: "ja" },
+];
+
+const [renderedPages, robots, sitemap] = await Promise.all([
+  Promise.all(
+    pages.map(async (page) => ({
+      ...page,
+      html: await render(page.pathname, "text/html"),
+    })),
+  ),
   render("/robots.txt", "text/plain"),
   render("/sitemap.xml", "application/xml"),
 ]);
 
+await Promise.all(
+  renderedPages.map((page) =>
+    mkdir(dirname(join(outputDir, page.output)), { recursive: true }),
+  ),
+);
+
 await Promise.all([
-  writeFile(join(outputDir, "index.html"), toStaticHtml(homeHtml)),
-  writeFile(join(outputDir, "research", "index.html"), toStaticHtml(researchHtml)),
+  ...renderedPages.map((page) =>
+    writeFile(join(outputDir, page.output), toStaticHtml(page.html, page.lang)),
+  ),
   writeFile(join(outputDir, "robots.txt"), robots),
   writeFile(join(outputDir, "sitemap.xml"), sitemap),
   writeFile(join(outputDir, ".nojekyll"), ""),

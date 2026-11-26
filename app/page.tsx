@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { homeUrl, siteUrl } from "./site";
+import {
+  LanguageSwitcher,
+  type Locale,
+  pagePath,
+  pageUrl,
+} from "./i18n";
+import { homeText, localizeHomeData } from "./home-copy";
+import { siteUrl } from "./site";
 import VisitorCounter from "./visitor-counter";
 
 const ArrowUpRight = () => (
@@ -20,27 +27,32 @@ const acbUrl = "https://www.csie.ntu.edu.tw/~kmchao/students/index.html";
 const juntendoEmergencyUrl =
   "https://hosp.juntendo.ac.jp/clinic/department/kyukyu/staff.html";
 
-const profilePageStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  url: homeUrl,
-  mainEntity: {
-    "@type": "Person",
-    "@id": `${homeUrl}#person`,
-    name: "侯岳岑",
-    alternateName: "Yueh-Tseng Hou",
-    honorificSuffix: "M.D.",
-    description: "急診醫師・臨床 AI 研究者",
-    url: homeUrl,
-    image: `${siteUrl}/portrait.jpg`,
-    jobTitle: "專任主治醫師",
-    worksFor: {
-      "@type": "Hospital",
-      name: "台北慈濟醫院",
+function profilePageStructuredData(locale: Locale) {
+  const url = pageUrl(locale, "home");
+
+  return {
+    url,
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    inLanguage: locale === "zh" ? "zh-Hant" : locale,
+    mainEntity: {
+      "@type": "Person",
+      "@id": `${pageUrl("zh", "home")}#person`,
+      name: locale === "en" ? "Yueh-Tseng Hou" : "侯岳岑",
+      alternateName: locale === "en" ? "侯岳岑" : "Yueh-Tseng Hou",
+      honorificSuffix: "M.D.",
+      description: homeText(locale, "急診醫師・臨床 AI 研究者"),
+      url,
+      image: `${siteUrl}/portrait.jpg`,
+      jobTitle: homeText(locale, "專任主治醫師"),
+      worksFor: {
+        "@type": "Hospital",
+        name: homeText(locale, "台北慈濟醫院"),
+      },
+      sameAs: [scholarUrl, orcidUrl, linkedinUrl, threadsUrl, youtubeUrl],
     },
-    sameAs: [scholarUrl, orcidUrl, linkedinUrl, threadsUrl, youtubeUrl],
-  },
-};
+  };
+}
 
 const footerLinks = [
   { label: "Google Scholar", href: scholarUrl },
@@ -304,43 +316,58 @@ const SectionTitle = ({ title }: { title: string }) => (
   </div>
 );
 
-export default function Home() {
+export function HomePage({ locale = "zh" }: { locale?: Locale }) {
+  const t = (text: string) => homeText(locale, text);
+  const localizedPositions = localizeHomeData(locale, positions);
+  const localizedResearchExperience = localizeHomeData(locale, researchExperience);
+  const localizedClinicalExperience = localizeHomeData(locale, clinicalExperience);
+  const localizedEducation = localizeHomeData(locale, education);
+  const localizedQualifications = localizeHomeData(locale, qualifications);
+  const localizedProjectFacets = localizeHomeData(locale, projectFacets);
+  const localizedProjectFacts = localizeHomeData(locale, projectFacts);
+  const localizedAwards = localizeHomeData(locale, awards);
+  const localizedTalks = localizeHomeData(locale, talks);
+  const localizedFeedbackEntries = localizeHomeData(locale, feedbackEntries);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(profilePageStructuredData),
+          __html: JSON.stringify(profilePageStructuredData(locale)),
         }}
       />
       <a className="skip-link" href="#content">
-        跳至主要內容
+        {t("跳至主要內容")}
       </a>
       <header>
         <div className="wrap header-in">
-          <a className="mark" href="#top" aria-label="回到首頁">
-            侯岳岑醫師<small>YUEH-TSENG HOU</small>
+          <a className="mark" href="#top" aria-label={t("回到首頁")}>
+            {t("侯岳岑醫師")}<small>YUEH-TSENG HOU</small>
           </a>
-          <nav aria-label="主要導覽">
-            <a href="#about">關於我</a>
-            <a href="#experience">經歷</a>
-            <a href="#project">代表專案</a>
-            <Link href="/research">研究成果</Link>
-            <a href="#feedback">感謝與回饋</a>
-            <a href="#contact">聯絡</a>
-          </nav>
+          <div className="header-actions">
+            <nav className="main-nav" aria-label={t("主要導覽")}>
+              <a href="#about">{t("關於我")}</a>
+              <a href="#experience">{t("經歷")}</a>
+              <a href="#project">{t("代表專案")}</a>
+              <Link href={pagePath(locale, "research")}>{t("研究成果")}</Link>
+              <a href="#feedback">{t("感謝與回饋")}</a>
+              <a href="#contact">{t("聯絡")}</a>
+            </nav>
+            <LanguageSwitcher locale={locale} page="home" />
+          </div>
         </div>
       </header>
 
       <main className="wrap" id="content" tabIndex={-1}>
         <div className="hero" id="top">
           <div>
-            <p className="kicker">急診醫學・臨床 AI</p>
-            <h1>侯岳岑</h1>
-            <p className="en-name">Yueh-Tseng Hou, M.D.</p>
-            <p className="idline">急診醫師・臨床 AI 研究者</p>
+            <p className="kicker">{t("急診醫學・臨床 AI")}</p>
+            <h1>{locale === "en" ? "Yueh-Tseng Hou" : "侯岳岑"}</h1>
+            <p className="en-name">{locale === "en" ? "M.D." : "Yueh-Tseng Hou, M.D."}</p>
+            <p className="idline">{t("急診醫師・臨床 AI 研究者")}</p>
             <p className="intro">
-              我是台北慈濟醫院急診部專任主治醫師，同時於國立臺灣大學生醫電資所攻讀博士。在分秒必爭的急診現場，我致力於推動醫療與人工智慧的深度結合。過去幾年，我與跨領域團隊將敗血症預測模型成功落地至常態臨床流程中。我的核心角色，是精準轉譯臨床痛點、資料脈絡與工程邊界，讓演算法不只是高分的模型，而是醫護團隊真正敢用、好用的臨床決策工具。
+              {t("我是台北慈濟醫院急診部專任主治醫師，同時於國立臺灣大學生醫電資所攻讀博士。在分秒必爭的急診現場，我致力於推動醫療與人工智慧的深度結合。過去幾年，我與跨領域團隊將敗血症預測模型成功落地至常態臨床流程中。我的核心角色，是精準轉譯臨床痛點、資料脈絡與工程邊界，讓演算法不只是高分的模型，而是醫護團隊真正敢用、好用的臨床決策工具。")}
             </p>
             <div className="links">
               <a href={scholarUrl} target="_blank" rel="noreferrer">
@@ -357,27 +384,27 @@ export default function Home() {
               </a>
             </div>
             <p className="threads-note">
-              平常也在{" "}
+              {t("平常也在")}{" "}
               <a href={threadsUrl} target="_blank" rel="noreferrer">
                 Threads
               </a>{" "}
-              與{" "}
+              {t("與")}{" "}
               <a href={youtubeUrl} target="_blank" rel="noreferrer">
                 YouTube
               </a>{" "}
-              經營逛街學醫學——把醫學知識寫得貼近日常。
+              {t("經營逛街學醫學——把醫學知識寫得貼近日常。")}
             </p>
           </div>
           <div className="photo-frame">
             <div className="photo">
               {/* eslint-disable-next-line @next/next/no-img-element -- 部署目標無 next/image 最佳化服務，靜態單圖用原生 img */}
-              <img src="/portrait.jpg" alt="侯岳岑醫師形象照" />
+              <img src="/portrait.jpg" alt={t("侯岳岑醫師形象照")} />
             </div>
           </div>
         </div>
 
-        <div className="facts" aria-label="現職與身分">
-          {positions.map((item) => (
+        <div className="facts" aria-label={t("現職與身分")}>
+          {localizedPositions.map((item) => (
             <div key={item.role}>
               <em>{item.label}</em>
               <strong>{item.role}</strong>
@@ -388,31 +415,43 @@ export default function Home() {
 
         <div className="pull">
           <p>
-            <span>在急診第一線與演算法之間，做引路與翻譯的人。</span>
+            <span>{t("在急診第一線與演算法之間，做引路與翻譯的人。")}</span>
             <small>Bridging the gap between clinical reality and machine learning.</small>
           </p>
         </div>
 
         <section id="about">
-          <SectionTitle title="關於我" />
+          <SectionTitle title={t("關於我")} />
           <p className="lede">
-            我關心的不只是模型評估指標（Metrics），而是它能否真正挽救急診病人的生命。
+            {t("我關心的不只是模型評估指標（Metrics），而是它能否真正挽救急診病人的生命。")}
           </p>
           <div className="cols">
             <p>
-              臨床端理解病患與照護流程的痛點，技術端掌握數據與演算法的極限；而智慧醫療最關鍵的挑戰，是將兩端的認知盲區轉化為同一套「<strong>做得出、驗得了、且符合急診工作流</strong>」的解決方案。
+              {locale === "zh" ? (
+                <>
+                  臨床端理解病患與照護流程的痛點，技術端掌握數據與演算法的極限；而智慧醫療最關鍵的挑戰，是將兩端的認知盲區轉化為同一套「<strong>做得出、驗得了、且符合急診工作流</strong>」的解決方案。
+                </>
+              ) : (
+                <>
+                  {t("臨床端理解病患與照護流程的痛點，技術端掌握數據與演算法的極限；而智慧醫療最關鍵的挑戰，是將兩端的認知盲區轉化為同一套")}
+                  {locale === "ja" ? "「" : "“"}
+                  <strong>{t("做得出、驗得了、且符合急診工作流")}</strong>
+                  {locale === "ja" ? "」" : "”"}
+                  {t("的解決方案。")}
+                </>
+              )}
             </p>
             <p>
-              因此，我的研究與實作涵蓋了全流程：從臨床痛點的精準定義、研究與驗證架構設計、數據脈絡的醫學判讀，到模型可解釋性與上線後的跨部門流程整合。結合急診重症、離島緊急後送以及法學研習的跨域背景，我重視系統的安全性與合規性，也致力於在跨領域團隊中建立開放、互信且高效的共創文化。
+              {t("因此，我的研究與實作涵蓋了全流程：從臨床痛點的精準定義、研究與驗證架構設計、數據脈絡的醫學判讀，到模型可解釋性與上線後的跨部門流程整合。結合急診重症、離島緊急後送以及法學研習的跨域背景，我重視系統的安全性與合規性，也致力於在跨領域團隊中建立開放、互信且高效的共創文化。")}
             </p>
           </div>
         </section>
 
         <section id="experience">
-          <SectionTitle title="經歷" />
-          <h3 className="sub-h">研究經歷</h3>
+          <SectionTitle title={t("經歷")} />
+          <h3 className="sub-h">{t("研究經歷")}</h3>
           <div className="rows">
-            {researchExperience.map((item) => (
+            {localizedResearchExperience.map((item) => (
               <div className="row" key={`${item.period}-${item.title}`}>
                 <span className="yr">{item.period}</span>
                 <div>
@@ -436,9 +475,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <h3 className="sub-h">臨床經歷</h3>
+          <h3 className="sub-h">{t("臨床經歷")}</h3>
           <div className="rows">
-            {clinicalExperience.map((item) => (
+            {localizedClinicalExperience.map((item) => (
               <div className="row" key={`${item.period}-${item.title}-${item.detail}`}>
                 <span className="yr">{item.period}</span>
                 <div>
@@ -448,9 +487,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <h3 className="sub-h">學歷與進修</h3>
+          <h3 className="sub-h">{t("學歷與進修")}</h3>
           <div className="rows">
-            {education.map((item) => (
+            {localizedEducation.map((item) => (
               <div className="row" key={item.title}>
                 <span className="yr">{item.period}</span>
                 <div>
@@ -460,9 +499,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <h3 className="sub-h">專業資格</h3>
+          <h3 className="sub-h">{t("專業資格")}</h3>
           <div className="rows">
-            {qualifications.map((item) => (
+            {localizedQualifications.map((item) => (
               <div className="row" key={item.title}>
                 <span className="yr">{item.period}</span>
                 <div>
@@ -474,17 +513,17 @@ export default function Home() {
         </section>
 
         <section id="project">
-          <SectionTitle title="代表專案" />
-          <p className="proj-name">敗血症 AI 臨床決策支援系統</p>
-          <p className="proj-with">台北慈濟醫院 × ASUS AICS</p>
+          <SectionTitle title={t("代表專案")} />
+          <p className="proj-name">{t("敗血症 AI 臨床決策支援系統")}</p>
+          <p className="proj-with">{t("台北慈濟醫院")} × ASUS AICS</p>
           <p className="proj-lede">
-            敗血症是急診高致死率的危急重症，黃金治療時間稍縱即逝。此專案核心在於：如何提早辨識隱匿性高風險患者，並在不干擾醫護搶救節奏的前提下，將警示無縫嵌入急診日常。
+            {t("敗血症是急診高致死率的危急重症，黃金治療時間稍縱即逝。此專案核心在於：如何提早辨識隱匿性高風險患者，並在不干擾醫護搶救節奏的前提下，將警示無縫嵌入急診日常。")}
           </p>
           <p className="proj-role">
-            我作為臨床需求提出者與研究計畫主持人，整合三年急診臨床數據建立改善標竿，協同 ASUS AICS 資料團隊、院內資訊部、急診護理與主管團隊，推進模型建置與 HIS 整合。模型與演算法由專業工程團隊操刀；我的任務，是確保每一行演算法，都精準回應急診第一線的真實難題。
+            {t("我作為臨床需求提出者與研究計畫主持人，整合三年急診臨床數據建立改善標竿，協同 ASUS AICS 資料團隊、院內資訊部、急診護理與主管團隊，推進模型建置與 HIS 整合。模型與演算法由專業工程團隊操刀；我的任務，是確保每一行演算法，都精準回應急診第一線的真實難題。")}
           </p>
           <div className="facets">
-            {projectFacets.map((facet) => (
+            {localizedProjectFacets.map((facet) => (
               <div key={facet.num}>
                 <em>{facet.num}</em>
                 <strong>{facet.title}</strong>
@@ -492,33 +531,33 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="proj-facts" aria-label="專案摘要">
-            {projectFacts.map((fact) => (
+          <div className="proj-facts" aria-label={t("專案摘要")}>
+            {localizedProjectFacts.map((fact) => (
               <div key={fact}>{fact}</div>
             ))}
           </div>
         </section>
 
         <section id="research">
-          <SectionTitle title="研究與分享" />
+          <SectionTitle title={t("研究與分享")} />
           <p className="topics">
-            研究主題：敗血症決策支援、外傷與急診預後、休克指數、醫學影像
-            AI。完整著作見{" "}
+            {t("研究主題：")}
+            {t("敗血症決策支援、外傷與急診預後、休克指數、醫學影像 AI。完整著作見")}{" "}
             <a href={scholarUrl} target="_blank" rel="noreferrer">
               Google Scholar
             </a>{" "}
-            與{" "}
+            {t("與")}{" "}
             <a href={orcidUrl} target="_blank" rel="noreferrer">
               ORCID
             </a>
-            。
+            {locale === "en" ? "." : "。"}
           </p>
-          <Link className="research-page-link" href="/research">
-            查看完整論文與歷年研究計畫 <ArrowUpRight />
+          <Link className="research-page-link" href={pagePath(locale, "research")}>
+            {t("查看完整論文與歷年研究計畫")} <ArrowUpRight />
           </Link>
-          <h3 className="sub-h">獎項與補助</h3>
+          <h3 className="sub-h">{t("獎項與補助")}</h3>
           <div className="rows">
-            {awards.map((item) => (
+            {localizedAwards.map((item) => (
               <div className="row" key={`${item.year}-${item.title}-${item.note}`}>
                 <span className="yr">{item.year}</span>
                 <div>
@@ -528,9 +567,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <h3 className="sub-h">演講與教學</h3>
+          <h3 className="sub-h">{t("演講與教學")}</h3>
           <div className="rows">
-            {talks.map((item) => (
+            {localizedTalks.map((item) => (
               <div className="row" key={item.title}>
                 <span className="yr">{item.year}</span>
                 <div>
@@ -540,34 +579,39 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <h3 className="sub-h">公共溝通</h3>
+          <h3 className="sub-h">{t("公共溝通")}</h3>
           <p className="topics">
             <a href={threadsUrl} target="_blank" rel="noreferrer">
               Threads
             </a>{" "}
-            與{" "}
+            {t("與")}{" "}
             <a href={youtubeUrl} target="_blank" rel="noreferrer">
               YouTube
-            </a>{"｜逛街學醫學——把醫學知識寫得貼近日常。"}
+              </a>{locale === "zh"
+                ? "｜逛街學醫學——把醫學知識寫得貼近日常。"
+                : `｜${t("逛街學醫學——把醫學知識寫得貼近日常。")}`}
           </p>
         </section>
 
         <section id="feedback">
-          <SectionTitle title="感謝與回饋" />
+          <SectionTitle title={t("感謝與回饋")} />
           <p className="feedback-intro">
-            來自病人與家屬的文字，提醒我在忙碌的急診日常中，持續珍惜每一次信任與託付。
+            {t("來自病人與家屬的文字，提醒我在忙碌的急診日常中，持續珍惜每一次信任與託付。")}
           </p>
           <div className="feedback-grid">
-            {feedbackEntries.map((entry) => (
+            {localizedFeedbackEntries.map((entry) => (
               <article className="feedback-card" key={`${entry.date}-${entry.author}`}>
                 <h3>{entry.title}</h3>
+                {locale !== "zh" ? (
+                  <p className="feedback-translation">{t("中文原文翻譯")}</p>
+                ) : null}
                 <blockquote>{entry.quote}</blockquote>
                 <div className="feedback-meta">
                   <span>{entry.author} · {entry.role}</span>
                   <time dateTime={entry.date}>{entry.date.replaceAll("-", ".")}</time>
                 </div>
                 <details className="feedback-details">
-                  <summary>閱讀原始回饋</summary>
+                  <summary>{t("閱讀原始回饋")}</summary>
                   <div className="feedback-sources">
                     {entry.sources.map((source) => (
                       <figure key={source.src}>
@@ -575,7 +619,7 @@ export default function Home() {
                           href={source.src}
                           target="_blank"
                           rel="noreferrer"
-                          aria-label={`${source.label}（開啟原尺寸）`}
+                          aria-label={`${source.label}（${t("開啟原尺寸")}）`}
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element -- 靜態匯出保留完整原圖，無 next/image 最佳化服務 */}
                           <img
@@ -586,7 +630,7 @@ export default function Home() {
                             loading="lazy"
                           />
                         </a>
-                        <figcaption>{source.label} · 點圖查看原尺寸</figcaption>
+                        <figcaption>{source.label} · {t("點圖查看原尺寸")}</figcaption>
                       </figure>
                     ))}
                   </div>
@@ -597,41 +641,41 @@ export default function Home() {
         </section>
 
         <section id="contact">
-          <SectionTitle title="聯絡" />
+          <SectionTitle title={t("聯絡")} />
           <p className="contact-copy">
-            無論您來自醫療科技產業、學術研究單位、醫療機構或創投團隊，若您正在尋找能深度對接臨床與技術的合作夥伴，非常歡迎來信交流：
+            {t("無論您來自醫療科技產業、學術研究單位、醫療機構或創投團隊，若您正在尋找能深度對接臨床與技術的合作夥伴，非常歡迎來信交流：")}
           </p>
           <ul className="contact-topics">
             <li>
-              <strong>臨床 AI 與數位醫療產品：</strong>
-              需求定義、落地可行性評估、SaMD 臨床驗證設計
+              <strong>{t("臨床 AI 與數位醫療產品：")}</strong>
+              {t("需求定義、落地可行性評估、SaMD 臨床驗證設計")}
             </li>
             <li>
-              <strong>學術研究與跨國合作：</strong>
-              敗血症預測、急診重症預後、多模態醫學資料分析
+              <strong>{t("學術研究與跨國合作：")}</strong>
+              {t("敗血症預測、急診重症預後、多模態醫學資料分析")}
             </li>
             <li>
-              <strong>專題演講與專業授課：</strong>
-              臨床人員 AI 素養培訓、智慧醫療落地實務分享
+              <strong>{t("專題演講與專業授課：")}</strong>
+              {t("臨床人員 AI 素養培訓、智慧醫療落地實務分享")}
             </li>
           </ul>
           <div className="contact-actions">
             <p>
-              📬 商務與學術合作：歡迎透過{" "}
+              {t("📬 商務與學術合作：歡迎透過")}{" "}
               <a href={linkedinUrl} target="_blank" rel="noreferrer">
                 LinkedIn
               </a>{" "}
-              或來信 <a href="mailto:xde03012@tzuchi.com.tw">xde03012@tzuchi.com.tw</a> 洽詢。
+              {t("或來信")} <a href="mailto:xde03012@tzuchi.com.tw">xde03012@tzuchi.com.tw</a>{" "}{t("洽詢。")}
             </p>
             <p>
-              ☕ 醫學科普與生活交流：也歡迎造訪我的{" "}
+              {t("☕ 醫學科普與生活交流：也歡迎造訪我的")}{" "}
               <a href={threadsUrl} target="_blank" rel="noreferrer">
                 Threads
               </a>{" "}
-              與{" "}
+              {t("與")}{" "}
               <a href={youtubeUrl} target="_blank" rel="noreferrer">
                 YouTube
-              </a>，與我一起「逛街學醫學」。
+              </a>{t("，與我一起「逛街學醫學」。")}
             </p>
           </div>
           <address className="contact-details">
@@ -651,7 +695,7 @@ export default function Home() {
 
       <footer>
         <div className="wrap footer-in">
-          <span>侯岳岑 Yueh-Tseng Hou</span>
+          <span>{locale === "en" ? "Yueh-Tseng Hou" : "侯岳岑 Yueh-Tseng Hou"}</span>
           <div className="footer-links">
             {footerLinks.map((link) => (
               <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
@@ -661,10 +705,14 @@ export default function Home() {
           </div>
           <div className="footer-meta">
             <span>© {new Date().getFullYear()} Yueh-Tseng Hou</span>
-            <VisitorCounter />
+            <VisitorCounter locale={locale} />
           </div>
         </div>
       </footer>
     </>
   );
+}
+
+export default function Home() {
+  return <HomePage />;
 }

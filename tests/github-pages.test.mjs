@@ -26,7 +26,7 @@ function counterContext({
   pending = false,
 } = {}) {
   const number = { textContent: "…" };
-  const wrapper = { hidden: false };
+  const wrapper = { hidden: false, dataset: { numberLocale: "zh-TW" } };
   const requests = [];
 
   class MockDate {
@@ -94,18 +94,23 @@ async function settle() {
 }
 
 test("exports a static GitHub Pages artifact", async () => {
+  const pageFiles = [
+    "index.html",
+    "research/index.html",
+    "en/index.html",
+    "en/research/index.html",
+    "ja/index.html",
+    "ja/research/index.html",
+  ];
   await Promise.all([
-    access(new URL("../pages-dist/index.html", import.meta.url)),
-    access(new URL("../pages-dist/research/index.html", import.meta.url)),
+    ...pageFiles.map((file) => access(new URL(`../pages-dist/${file}`, import.meta.url))),
     access(new URL("../pages-dist/assets/site.css", import.meta.url)),
     access(new URL("../pages-dist/portrait.jpg", import.meta.url)),
     access(new URL("../pages-dist/.nojekyll", import.meta.url)),
   ]);
 
-  const [home, research] = await Promise.all([
-    artifact("index.html"),
-    artifact("research/index.html"),
-  ]);
+  const pages = await Promise.all(pageFiles.map((file) => artifact(file)));
+  const [home, research, englishHome, englishResearch, japaneseHome, japaneseResearch] = pages;
 
   assert.match(home, new RegExp(`<link rel="canonical" href="${siteRoot}/"`));
   assert.match(
@@ -122,7 +127,7 @@ test("exports a static GitHub Pages artifact", async () => {
   const cssFiles = (await readdir(cssDir)).filter((file) => file.endsWith(".css"));
   assert.equal(cssFiles.length, 1);
   const stylesheet = `${basePath}/assets/site.css?v=${encodeURIComponent(cssFiles[0])}`;
-  for (const html of [home, research]) {
+  for (const html of pages) {
     assert.ok(html.includes(`href="${stylesheet}"`));
   }
   const [builtCss, exportedCss] = await Promise.all([
@@ -131,11 +136,16 @@ test("exports a static GitHub Pages artifact", async () => {
   ]);
   assert.deepEqual(exportedCss, builtCss);
   assert.match(research, new RegExp(`href="${basePath}/#experience"`));
-  assert.doesNotMatch(`${home}${research}`, /rel="modulepreload"/i);
-  const staticPages = `${home}${research}`;
+  assert.match(englishResearch, new RegExp(`href="${basePath}/en/#experience"`));
+  assert.match(japaneseResearch, new RegExp(`href="${basePath}/ja/#experience"`));
+  assert.match(englishHome, /<html lang="en"/);
+  assert.match(japaneseHome, /<html lang="ja"/);
+  assert.match(home, /<html lang="zh-Hant"/);
+  assert.doesNotMatch(pages.join(""), /rel="modulepreload"/i);
+  const staticPages = pages.join("");
   assert.equal(
     (staticPages.match(/data-static-script="visitor-counter"/g) ?? []).length,
-    2,
+    6,
   );
   assert.equal(
     (
@@ -143,7 +153,7 @@ test("exports a static GitHub Pages artifact", async () => {
         /https:\/\/api\.counterapi\.dev\/v2\/yueh-tseng-hou\/yueh-tseng-hou-visits/g,
       ) ?? []
     ).length,
-    2,
+    6,
   );
   const withoutAllowedScripts = staticPages
     .replace(
@@ -155,7 +165,7 @@ test("exports a static GitHub Pages artifact", async () => {
       "",
     );
   assert.doesNotMatch(withoutAllowedScripts, /<script\b/i);
-  assert.doesNotMatch(`${home}${research}`, /\/_next\//);
+  assert.doesNotMatch(staticPages, /\/_next\//);
 });
 
 test("exports GitHub Pages crawl metadata", async () => {
@@ -168,7 +178,14 @@ test("exports GitHub Pages crawl metadata", async () => {
   assert.match(robots, /Host: https:\/\/brianann2339\.github\.io/);
   assert.deepEqual(
     [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
-    [`${siteRoot}/`, `${siteRoot}/research/`],
+    [
+      `${siteRoot}/`,
+      `${siteRoot}/research/`,
+      `${siteRoot}/en/`,
+      `${siteRoot}/en/research/`,
+      `${siteRoot}/ja/`,
+      `${siteRoot}/ja/research/`,
+    ],
   );
 });
 
